@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphonesSimple,faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
-import LogoB from '../img/logo/logo-black.PNG'
+import LogoB from '../img/logo/logo-black.png'
 import Image from "next/image";
 export default function Header1() {
     return (
@@ -109,7 +109,7 @@ export default function Header1() {
         
                 <div class="contact-infos mt-30 mb-30">
                     <div class="contact-list mb-30">
-                        <h4>Contact Info</h4>
+                        <h4>Contac  t Info</h4>
                         <ul class="p-0">
                             <li><i class="fal fa-map"></i>Kigali, Rwanda M Peace Plaza</li>
                             <li><i class="fal fa-phone-alt"></i><a href="tell:+250 788 458 897">+250 788 458 897</a></li>
