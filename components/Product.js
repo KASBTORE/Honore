@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from '@fortawesome/free-solid-svg-icons'
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
@@ -10,9 +11,11 @@ export default function Product({ product }) {
                 <div class="epix-single-product-3 mb-40 style-2 text-center swiper-slide">
                     <div class="epix-product-thumb-3">
                         <div class="epix-action">
-                            <a href="#" class="p-cart product-popup-toggle">
-                                <FontAwesomeIcon icon={faEye} />
-                            </a>
+                            <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
+                                <a href="#" class="p-cart product-popup-toggle">
+                                    <FontAwesomeIcon icon={faEye} />
+                                </a>
+                            </Link>
                             <a href={`https://wa.me/250788458897?text=Hello, i'm interested to buy this product, http://kabstore.devslab.io/product?details=${product._id}`} class="p-cart">
                                 <FontAwesomeIcon icon={faWhatsapp} />
                             </a>
