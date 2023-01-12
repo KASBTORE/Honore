@@ -1,11 +1,12 @@
 import React from 'react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Pagination from '@mui/material/Pagination';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphonesSimple, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
 import Image from "next/image";
 import Product from './Product'
+import Footer from './Footer'
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,13 +14,32 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { reactStrictMode } from 'next.config';
 export default function Main({ products }) {
-    const [sort, setSort] = useState('');
+    console.log(products.length);
+    const [sort, setSort] = useState('Computers');
     const [page, setPage] = useState(1)
-    const pageSize = 3
+    const pageSize = 2
+    const [start, setStart] = useState(1)
+    const [end, setEnd] = useState(pageSize)
+    let pageCount = Math.ceil(products.length / pageSize)
+    useEffect(() => {
+        pageCount = Math.ceil(products.length / pageSize)
+    }, [products])
+    console.log(pageCount);
     const displayProducts = useMemo(() => {
         const firstPageIndex = (page - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
+        if (lastPageIndex < products.length) {
+            setStart(firstPageIndex + 1)
+            setEnd(lastPageIndex)
+            console.log("was here", lastPageIndex);
+        }
+        else {
+            setStart(firstPageIndex + 1)
+            setEnd(firstPageIndex + 1)
+            console.log("was last bbbrr", firstPageIndex + 1);
+        }
         return products.slice(firstPageIndex, lastPageIndex);
+
     }, [page])
     const handlePagination = (event, page1) => {
         setPage(page1)
@@ -98,7 +118,7 @@ export default function Main({ products }) {
                                         </div>
                                         <div class="epix-ch-right">
                                             <div class="show-text">
-                                                <span>Showing 1–12 of 20 results</span>
+                                                <span>{`Showing ${start}–${end} of ${products.length} results`}</span>
                                             </div>
                                             <FormControl fullWidth>
                                                 <InputLabel id="demo-simple-select-label">Sort</InputLabel>
@@ -107,6 +127,7 @@ export default function Main({ products }) {
                                                     id="demo-simple-select"
                                                     value={sort}
                                                     label="Sort"
+                                                    defaultValue={"Computers"}
                                                     onChange={handleChange}
                                                 >
                                                     <MenuItem value={"Computers"}>Computers</MenuItem>
@@ -120,7 +141,7 @@ export default function Main({ products }) {
                                     <div class="epix-shop-product-main">
                                         <div class="tab-content" id="nav-tabContent">
                                             <div class="tab-pane fade show active" id="grid-view">
-                                                <div class="row">
+                                                <div class="row gap-4">
                                                     {
                                                         displayProducts.map((product, index) => {
                                                             if (sort == product.category) {
@@ -143,11 +164,12 @@ export default function Main({ products }) {
                     </div>
                     <div class="row justify-content-xxl-end">
                         <div class="col-xxl-9">
-                            <Pagination count={10} variant="outlined" onChange={handlePagination} shape="rounded" />
+                            <Pagination count={pageCount} variant="outlined" onChange={handlePagination} shape="rounded" />
                         </div>
                     </div>
                 </div>
             </div>
+            <Footer />
         </main>
 
 
