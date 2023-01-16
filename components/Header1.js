@@ -1,18 +1,32 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
+import SearchField from "react-search-field";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphonesSimple, faMagnifyingGlass, faBars, faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
 import LogoB from '../img/logo/logo-black.png'
 import Logo from '../img/logo/logo.png'
+import World from '../img/icon/world.png'
 import Image from "next/image";
 import ResponsiveNav from './responsiveNav';
+import Link from "next/link";
 export default function Header1() {
     const [nav, setNav] = useState(false)
+    const router = useRouter()
+    const [search, setSearch] = useState("")
+
     const [classes, setClasses] = useState([])
     const handleClick = (e) => {
         setNav(true)
         setClasses(["visible-h-sidebar", "overlay-open"])
         console.log("clicked bars");
+    }
+    const onChange = (e) => {
+        setSearch(e.target.value)
+
+    }
+    const onClick = () => {
+        router.push(`/search/${search}`)
     }
     return (
         <>
@@ -47,8 +61,8 @@ export default function Header1() {
                             </div>
                             <div class="header-form-3">
                                 <form action="#">
-                                    <input type="text" placeholder="Search anything here.." />
-                                    <button><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                                    <input type="text" placeholder="Search anything here.." onChange={onChange}></input>
+                                    <button onClick={onClick}><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
                                 </form>
                             </div>
                             <div class="header-nav header-nav-3">
@@ -65,7 +79,7 @@ export default function Header1() {
                                 <div class="single-item mr-30">
                                     <div class="single-action-3">
                                         <div class="thumb">
-                                            <img src="assets/img/icon/world.png" alt="" />
+                                            <Image src={World} width={30} />
                                         </div>
                                         <div class="content">
                                             <a href="shop">Kigali</a>
@@ -77,6 +91,7 @@ export default function Header1() {
                                     <div class="single-action-3">
                                         <div class="thumb">
                                             <img src="assets/img/icon/world.png" alt="" />
+                                            <Image src={World} width={30} />
                                         </div>
                                         <div class="content">
                                             <a href="contact">24 Support</a>

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { useState, useMemo, useEffect } from 'react';
 import Pagination from '@mui/material/Pagination';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,10 +10,15 @@ import Product from './Product'
 import Footer from './Footer'
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
+import Slider from '@mui/material/Slider';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { reactStrictMode } from 'next.config';
+import Link from 'next/link';
+function valuetext(value) {
+    return `RWF${value}`;
+}
 export default function Main({ products }) {
     console.log(products.length);
     const [sort, setSort] = useState('Computers');
@@ -20,6 +26,7 @@ export default function Main({ products }) {
     const pageSize = 2
     const [start, setStart] = useState(1)
     const [end, setEnd] = useState(pageSize)
+    const [price, setPrice] = useState(false)
     let pageCount = Math.ceil(products.length / pageSize)
     useEffect(() => {
         pageCount = Math.ceil(products.length / pageSize)
@@ -48,6 +55,15 @@ export default function Main({ products }) {
     const handleChange = (SelectChangeEvent) => {
         setSort(SelectChangeEvent.target.value);
     };
+    const [value, setValue] = useState([0, 100000000000000]);
+
+    const handleChange1 = (event, newValue) => {
+        setValue(newValue);
+        setPrice(true)
+    };
+    const filteredProducts = products.filter((product) => {
+        return product.price >= value[0] && product.price <= value[1]
+    })
     return (<>
         <main>
             {/* <div id="loading">
@@ -69,24 +85,35 @@ export default function Main({ products }) {
                                     <h4 class="epix-s-widget-title">SHOP BY CATEGORIES</h4>
                                     <div class="epix-taglist">
                                         <ul>
-                                            <li><a href="shop">Accessories</a></li>
-                                            <li><a href="shop">Cameras</a></li>
-                                            <li><a href="shop">Computer & Laptop</a></li>
-                                            <li><a href="shop">Tablet</a></li>
-                                            <li><a href="shop">Games & Accessories</a></li>
-                                            <li><a href="shop">Smartphone</a></li>
-                                            <li><a href="shop">Television</a></li>
-                                            <li><a href="shop">Uncategorized</a></li>
+                                            <li><Link href={`/category/${encodeURIComponent("accessories")}`}>Accessories</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("cameras")}`}>Cameras</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("computers")}`}>Computers</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("tablet")}`}>Tablet</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("games")}`}>Games</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("smartPhones")}`}>SmartPhones</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("television")}`}>Television</Link></li>
+                                            <li><Link href={`/category/${encodeURIComponent("uncategorized")}`}>Uncategorized</Link></li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="epix-sidebar-widget">
                                     <h4 class="epix-s-widget-title">PRICE</h4>
                                     <div class="slider-range mb-40">
-                                        <div id="slider-range"></div>
+                                        <Slider
+                                            getAriaLabel={() => 'Price range'}
+                                            value={value}
+                                            max={1000000}
+                                            onChange={handleChange1}
+                                            valueLabelDisplay="auto"
+                                            getAriaValueText={valuetext}
+                                            sx={{
+                                                width: 300,
+                                                color: 'black',
+                                            }}
+                                        />
                                         <p>
                                             <label for="amount">Price :</label>
-                                            <input type="text" id="amount" readonly />
+                                            <label for="amount"> {`RWF${value[0]}-RWF${value[1]}`}</label>
                                         </p>
                                     </div>
                                 </div>
@@ -144,13 +171,14 @@ export default function Main({ products }) {
                                                 <div class="row gap-4">
                                                     {
                                                         displayProducts.map((product, index) => {
-                                                            if (sort == product.category) {
+                                                            if (sort == product.category && value[0] <= product.price && product.price <= value[1]) {
                                                                 return <Product product={product} />
 
                                                             }
 
 
                                                         })
+
                                                     }
 
                                                 </div>
