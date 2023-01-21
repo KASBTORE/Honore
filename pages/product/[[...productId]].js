@@ -3,10 +3,10 @@ import ReactImageMagnify from 'react-image-magnify';
 import Header1 from "components/Header1";
 import Footer from "components/Footer";
 import Head from "next/head";
-export default function Product({ product }) {
+export default function Product({ product, carts }) {
     return (
         <>
-            <Header1 />
+            <Header1 carts={carts} />
 
             <div class="single-product-area mb-100">
                 <div class="container">
@@ -84,22 +84,25 @@ export default function Product({ product }) {
         </>
     )
 }
-export async function getStaticPaths() {
+// export async function getStaticPaths() {
 
-    const data = await fetch('http://localhost:4000/product')
-        .then(response => response.json())
-    const paths = data.map((product) => ({ params: { productId: product._id } }))
-    return {
-        paths,
-        fallback: false,
-    };
-}
-export async function getStaticProps({ params }) {
+//     const data = await fetch('http://localhost:4000/product')
+//         .then(response => response.json())
+//     const paths = data.map((product) => ({ params: { productId: product._id } }))
+//     return {
+//         paths,
+//         fallback: false,
+//     };
+// }
+export async function getServerSideProps({ params }) {
     const product = await fetch(`http://localhost:4000/product/${params.productId}`)
+        .then(response => response.json())
+    const carts = await fetch(`http://localhost:4000/cart`)
         .then(response => response.json())
     return {
         props: {
             product,
+            carts
         },
     };
 }

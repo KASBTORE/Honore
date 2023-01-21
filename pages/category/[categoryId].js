@@ -15,6 +15,8 @@ export default function Search({ filteredProducts, category }) {
 export async function getServerSideProps({ params }) {
     const products = await fetch(`http://localhost:4000/product`)
         .then(response => response.json())
+    const carts = await fetch(`http://localhost:4000/cart`)
+        .then(response => response.json())
     const filteredProducts = products.filter(
         product => {
             return (
@@ -30,7 +32,8 @@ export async function getServerSideProps({ params }) {
     return {
         props: {
             filteredProducts,
-            category
+            category,
+            carts
         },
     };
 }

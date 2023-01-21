@@ -1,10 +1,13 @@
 import Header1 from '../components/Header1'
 import Main from '../components/Main'
 import Product from '../components/Product'
-export default function Home({ products }) {
+import Loader from 'components/Loader'
+export default function Home({ products, carts, isLoading }) {
+  console.log(isLoading);
   return (
     <>
-      <Header1 />
+      {isLoading && <Loader />}
+      <Header1 carts={carts} />
       <Main products={products} />
 
 
@@ -12,13 +15,25 @@ export default function Home({ products }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
   const products = await fetch('http://localhost:4000/product')
     .then(response => response.json())
+  const carts = await fetch('http://localhost:4000/cart')
+    .then(response => response.json())
 
-  return {
-    props: {
-      products
+  const { pathname } = ctx
+  if (pathname === '/') {
+    let isLoading = true
+    return {
+      props: {
+        products, carts, isLoading
+      }
     }
   }
+  return {
+    props: {
+      products, carts
+    }
+  }
+
 }
