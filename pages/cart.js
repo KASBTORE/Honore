@@ -86,7 +86,7 @@ export default function Cart({ products }) {
                                                 }
                                                 const cartDelete = async () => {
                                                     // setLoading(true)
-                                                    const res = await fetch(`http://localhost:4000/cart/${product._id}`, {
+                                                    const res = await fetch(`https://kabstore-7p9q.onrender.com/cart/${product._id}`, {
                                                         method: 'DELETE',
                                                         headers: {
                                                             'Content-Type': 'application/json'

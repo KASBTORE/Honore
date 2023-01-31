@@ -32,7 +32,7 @@ export default function Product({ product }) {
     const onClick = async () => {
         // console.log(message);
         try {
-            const api = await fetch('http://localhost:4000/cart', {
+            const api = await fetch('https://kabstore-7p9q.onrender.com/cart', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
