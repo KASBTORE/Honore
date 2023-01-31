@@ -19,7 +19,7 @@ export default function Search({ filteredProducts, word }) {
 }
 
 export async function getServerSideProps({ params }) {
-    const products = await fetch(`http://localhost:4000/product`)
+    const products = await fetch(`https://kabstore-7p9q.onrender.com/product`)
         .then(response => response.json())
     const filteredProducts = products.filter(
         product => {

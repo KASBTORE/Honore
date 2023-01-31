@@ -16,9 +16,9 @@ export default function Home({ products, carts, isLoading }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const products = await fetch('http://localhost:4000/product')
+  const products = await fetch('https://kabstore-7p9q.onrender.com/product')
     .then(response => response.json())
-  const carts = await fetch('http://localhost:4000/cart')
+  const carts = await fetch('https://kabstore-7p9q.onrender.com/cart')
     .then(response => response.json())
 
   const { pathname } = ctx

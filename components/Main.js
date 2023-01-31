@@ -21,7 +21,7 @@ function valuetext(value) {
 }
 export default function Main({ products }) {
     console.log(products.length);
-    const [sort, setSort] = useState('Computers');
+    const [sort, setSort] = useState('off');
     const [page, setPage] = useState(1)
     const pageSize = 2
     const [start, setStart] = useState(1)
@@ -154,12 +154,12 @@ export default function Main({ products }) {
                                                     id="demo-simple-select"
                                                     value={sort}
                                                     label="Sort"
-                                                    defaultValue={"Computers"}
+                                                    defaultValue={"off"}
                                                     onChange={handleChange}
                                                 >
-                                                    <MenuItem value={"Computers"}>Computers</MenuItem>
-                                                    <MenuItem value={"Phones"}>Phones</MenuItem>
-                                                    <MenuItem value={"Watches"}>Phones</MenuItem>
+                                                    <MenuItem value={"featured"}>Featured</MenuItem>
+                                                    <MenuItem value={"off"}>OFF</MenuItem>
+                                                    <MenuItem value={"new"}>NEW</MenuItem>
                                                 </Select>
                                             </FormControl>
 
@@ -171,7 +171,7 @@ export default function Main({ products }) {
                                                 <div class="row gap-4">
                                                     {
                                                         displayProducts.map((product, index) => {
-                                                            if (sort == product.category && value[0] <= product.price && product.price <= value[1]) {
+                                                            if (sort == product.status && value[0] <= product.price && product.price <= value[1]) {
                                                                 return <Product product={product} />
 
                                                             }

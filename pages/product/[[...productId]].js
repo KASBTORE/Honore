@@ -19,7 +19,7 @@ export default function Product({ product, carts }) {
                                             <div class="tab-pane fade show active" id="epix-single-1">
                                                 <div class="epix-single-product-thumb-4">
                                                     <div class="epix-featured">
-                                                        <span>featured</span>
+                                                        <span>{product.status}</span>
                                                     </div>
                                                     <ReactImageMagnify {...{
                                                         smallImage: {
@@ -95,9 +95,9 @@ export default function Product({ product, carts }) {
 //     };
 // }
 export async function getServerSideProps({ params }) {
-    const product = await fetch(`http://localhost:4000/product/${params.productId}`)
+    const product = await fetch(`https://kabstore-7p9q.onrender.com/product/${params.productId}`)
         .then(response => response.json())
-    const carts = await fetch(`http://localhost:4000/cart`)
+    const carts = await fetch(`https://kabstore-7p9q.onrender.com/cart`)
         .then(response => response.json())
     return {
         props: {

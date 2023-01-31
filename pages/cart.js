@@ -10,9 +10,13 @@ import { useRouter } from "next/router";
 export default function Cart({ products }) {
     const [total, setTotal] = useState(0)
     const [loading, setLoading] = useState(false)
+    const [data, setData] = useState(products)
     const router = useRouter()
+    const refreshData = () => router.replace(router.asPath)
     useEffect(() => {
-        let t = products.map((p, i) => {
+        setData(products)
+        console.log(data);
+        let t = data.map((p, i) => {
             console.log(total)
             console.log(i);
             return p.price;
@@ -26,7 +30,12 @@ export default function Cart({ products }) {
         }
         console.log(total1);
         setTotal(total1)
-    }, [products])
+
+    }, [data, products])
+    // useEffect(() => {
+    //     router.push(router.pathname, undefined, { shallow: true });
+    // }, []);
+
 
     return (
         <>
@@ -62,7 +71,7 @@ export default function Cart({ products }) {
                                     </thead>
                                     <tbody>
                                         {
-                                            products.map((product, index) => {
+                                            data.map((product, index) => {
                                                 const [quantity, setQuantity] = useState(1)
                                                 const minus = () => {
                                                     if (quantity > 1) {
@@ -76,7 +85,7 @@ export default function Cart({ products }) {
 
                                                 }
                                                 const cartDelete = async () => {
-                                                    setLoading(true)
+                                                    // setLoading(true)
                                                     const res = await fetch(`http://localhost:4000/cart/${product._id}`, {
                                                         method: 'DELETE',
                                                         headers: {
@@ -84,10 +93,11 @@ export default function Cart({ products }) {
                                                         }
                                                     });
                                                     const data = await res.json();
-                                                    if (data) {
-                                                        router.reload()
-                                                    }
-                                                    return data;
+                                                    console.log(data);
+
+                                                    // if (data) {
+                                                    //     router.reload()
+                                                    // }
                                                 }
 
                                                 return (
@@ -160,11 +170,11 @@ export default function Cart({ products }) {
 }
 
 export async function getServerSideProps() {
-    const products = await fetch('http://localhost:4000/cart')
+    const products = await fetch('https://kabstore-7p9q.onrender.com/cart')
         .then(response => response.json())
     return {
         props: {
-            products
+            products: products
         }
     }
 }
