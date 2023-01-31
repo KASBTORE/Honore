@@ -6520,11 +6520,14 @@ i.fas.fa-star.text-gray {
   border-right: 1px solid #f1f1f1;
   top: 0;
 }
-.minus,.plus{
-  background-color:#eaedff;
-  width:20px;
+
+.minus,
+.plus {
+  background-color: #eaedff;
+  width: 20px;
 
 }
+
 .epix-quantity-form .cart-plus-minus>*.plus {
   right: 0;
   border-left: 1px solid #f1f1f1;
@@ -10325,6 +10328,11 @@ div.sidebar__menu--social a {
   border: 2px solid #eaedff;
   padding: 0 15px;
   margin-right: 10px;
+  background-color: white;
+}
+
+input {
+  background-color: white !important;
 }
 
 .coupon2 {
