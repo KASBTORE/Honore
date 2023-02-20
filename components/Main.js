@@ -160,6 +160,7 @@ export default function Main({ products }) {
                                                     <MenuItem value={"featured"}>Featured</MenuItem>
                                                     <MenuItem value={"off"}>OFF</MenuItem>
                                                     <MenuItem value={"new"}>NEW</MenuItem>
+                                                    <MenuItem value={"on"}>ON</MenuItem>
                                                 </Select>
                                             </FormControl>
 

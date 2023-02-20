@@ -10323,6 +10323,8 @@ div.sidebar__menu--social a {
   float: left;
 }
 
+.data-background {}
+
 #coupon_code {
   height: 50px;
   border: 2px solid #eaedff;
