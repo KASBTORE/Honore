@@ -12,6 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header1 from "components/Header1";
+import Timer from "components/Timer";
 import Footer from "components/Footer";
 import Logo from "../img/logo/logo-design.PNG"
 import Banner from "img/banner/video-banner.jpg"
@@ -479,19 +480,9 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
 
                                     </div>
                                 </div>
-                                <div class="offer-label mb-15">
-                                    <span>Hurry up! Offer ends in:</span>
-                                </div>
-                                <div class="deals-countdown deals-countdown-2 mb-25">
-                                    <div class="countdown-inner" data-countdown="" data-date="Mar 02 2022 20:20:22">
-                                        <ul>
-                                            <li><span data-days="">401</span> Days</li>
-                                            <li><span data-hours="">1</span> Hours</li>
-                                            <li><span data-minutes="">29</span> min</li>
-                                            <li><span data-seconds="">40</span> sec</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                {console.log(promProduct[0].duration)}
+                                <Timer initialTime={Date.parse(promProduct[0].duration) / 1000} />
+
                             </div>
                         </div>
                     </div>
@@ -667,7 +658,7 @@ export async function getServerSideProps(ctx) {
         .then(response => response.json())
     const carts = await fetch('https://kabstore-7p9q.onrender.com/cart')
         .then(response => response.json())
-    const promProduct = await fetch('http://localhost:4000/promproduct')
+    const promProduct = await fetch('https://kabstore-7p9q.onrender.com/promproduct')
         .then(response => response.json())
     const { pathname } = ctx
     if (pathname === '/') {
