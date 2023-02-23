@@ -16,7 +16,8 @@ import { use, useState } from 'react'
 import Loader from 'components/Loader'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-export default function App({ Component, pageProps }) {
+import { SessionProvider } from 'next-auth/react'
+export default function App({ Component, pageProps, session }) {
   const [loading, setLoading] = useState(false)
   Router.events.on("routeChangeStart", (url) => {
     console.log("Changing");
@@ -31,9 +32,9 @@ export default function App({ Component, pageProps }) {
     console.log("Complete");
   })
   return (
-    <>
+    <SessionProvider session={session}>
       {loading && <Loader />}
       <Component {...pageProps} />
-    </>
+    </SessionProvider>
   )
 }

@@ -7,8 +7,6 @@ function Timer({ initialTime }) {
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
     const [promMessage, setPromMessage] = useState("Hurry up! Offer ends in");
-    console.log(initialTime);
-
     useEffect(() => {
         const intervalId = setInterval(() => {
             setTime(prevTime => prevTime - 1);
@@ -38,9 +36,6 @@ function Timer({ initialTime }) {
         return `${hours}:${minutes}:${seconds}`;
     }
 
-    console.log(hours);
-    console.log(minutes);
-    console.log(seconds);
 
     return (
         <>

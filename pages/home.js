@@ -31,7 +31,10 @@ import 'swiper/css/navigation';
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Login from 'components/LoginAuth';
 export default function HomePage({ products, carts, isLoading, promProduct }) {
+    const { data: session } = useSession();
     console.log(promProduct);
     const categories = ["headphones", "television", "accessories", "phone", "computers"]
     const [category, setCategory] = useState(categories[0])
@@ -395,7 +398,15 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                     </Link>
                                                                     <a class="p-cart product-popup-toggle">
                                                                         <button onClick={() => {
-                                                                            return cartAdd(product, index)
+                                                                            if (session) {
+                                                                                return cartAdd(product, index)
+
+                                                                            }
+                                                                            else {
+                                                                                console.log("No session");
+
+                                                                            }
+
                                                                         }}>
                                                                             <FontAwesomeIcon icon={faCartShopping} />
                                                                         </button>

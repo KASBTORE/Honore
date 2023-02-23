@@ -1,7 +1,11 @@
-export default function Login() {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { signIn } from "next-auth/react";
+export default function LoginAuth() {
+    const exit = () => { }
+
     return (
         <section class="login-area pt-100 pb-100 overlay-open w-full h-full  ">
-            <button onClick={cartDelete}><FontAwesomeIcon icon={faXmark} /></button>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 offset-lg-2">
@@ -14,6 +18,9 @@ export default function Login() {
                                 <input id="pass" type="password" placeholder="Enter password..." />
                                 <div class="mt-10"></div>
                                 <a href="login.html" class="os-btn os-btn-black w-100">login Now</a>
+                                <button className="os-btn os-btn-black w-100" onClick={() => {
+                                    signIn("google", { callbackUrl: "http://localhost:3000/api/auth/callback/google" });
+                                }}>Sign in with Google</button>
                             </form>
                         </div>
                     </div>
