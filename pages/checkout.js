@@ -1,6 +1,15 @@
 import Footer from "components/Footer"
 import Header1 from "components/Header1"
+import { useEffect, useState } from "react"
 export default function CheckOut({ carts }) {
+    const [total, setTotal] = useState(0)
+    const [selectedValue, setSelectedValue] = useState(0);
+    useEffect(() => {
+        setTotal(carts.reduce((acc, curr) => acc + curr.price, 0))
+    }, [carts])
+    const handleOptionChange = (event) => {
+        setSelectedValue(event.target.value);
+    };
     return (
         <>
             <Header1 carts={carts} />
@@ -272,40 +281,40 @@ export default function CheckOut({ carts }) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr class="cart_item">
-                                                        <td class="product-name">
-                                                            Vestibulum suscipit <strong class="product-quantity"> × 1</strong>
-                                                        </td>
-                                                        <td class="product-total">
-                                                            <span class="amount">$165.00</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="cart_item">
-                                                        <td class="product-name">
-                                                            Vestibulum dictum magna <strong class="product-quantity"> × 1</strong>
-                                                        </td>
-                                                        <td class="product-total">
-                                                            <span class="amount">$50.00</span>
-                                                        </td>
-                                                    </tr>
+                                                    {
+                                                        carts.map((item, index) => {
+                                                            return (
+                                                                <tr class="cart_item">
+                                                                    <td class="product-name">
+                                                                        {item.name} <strong class="product-quantity"> × {item.quantity}</strong>
+                                                                    </td>
+                                                                    <td class="product-total">
+                                                                        <span class="amount">${item.price}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
+
+
                                                 </tbody>
                                                 <tfoot>
                                                     <tr class="cart-subtotal">
                                                         <th>Cart Subtotal</th>
-                                                        <td><span class="amount">$215.00</span></td>
+                                                        <td><span class="amount">${total}</span></td>
                                                     </tr>
                                                     <tr class="shipping">
                                                         <th>Shipping</th>
                                                         <td>
                                                             <ul>
                                                                 <li>
-                                                                    <input id="amount" type="radio" name="checkout" />
+                                                                    <input id="amount" type="radio" name="checkout" value={7} onChange={handleOptionChange} />
                                                                     <label for="amount">
                                                                         Flat Rate: <span class="amount">$7.00</span>
                                                                     </label>
                                                                 </li>
                                                                 <li>
-                                                                    <input id="shipping" type="radio" name="checkout" />
+                                                                    <input id="shipping" type="radio" name="checkout" value={0} onChange={handleOptionChange} />
                                                                     <label for="shipping">Free Shipping:</label>
                                                                 </li>
                                                                 <li></li>
@@ -314,7 +323,7 @@ export default function CheckOut({ carts }) {
                                                     </tr>
                                                     <tr class="order-total">
                                                         <th>Order Total</th>
-                                                        <td><strong><span class="amount">$215.00</span></strong>
+                                                        <td><strong><span class="amount">${total + selectedValue}</span></strong>
                                                         </td>
                                                     </tr>
                                                 </tfoot>
@@ -390,7 +399,7 @@ export default function CheckOut({ carts }) {
     )
 }
 export async function getServerSideProps() {
-    const carts = await fetch('https://kabstore-7p9q.onrender.com/cart')
+    const carts = await fetch('http://localhost:4000/cart')
         .then(response => response.json())
     return {
         props: {

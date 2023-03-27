@@ -10,19 +10,38 @@ import World from '../img/icon/world.png'
 import Image from "next/image";
 import ResponsiveNav from './responsiveNav';
 import Link from "next/link";
+import { getSession, useSession } from "next-auth/react";
 export default function Header1({ carts }) {
+    const session = useSession()
+
+    console.log("here consoling session from header", session);
+
     const [nav, setNav] = useState(false)
     const router = useRouter()
     const [search, setSearch] = useState("")
     const [total, setTotal] = useState(0)
-
+    const [currentPath, setCurrentPath] = useState("")
 
     useEffect(() => {
-        let t = carts.map((p, i) => {
-            console.log(total)
-            console.log(i);
-            return p.price;
-        })
+        setCurrentPath(router.asPath.slice(1))
+        console.log(currentPath);
+
+    }, [currentPath])
+    console.log(currentPath);
+
+    console.log(carts);
+
+    useEffect(() => {
+        let t = []
+        if (carts.length !== 0) {
+            console.log(carts);
+            t = carts?.map((p, i) => {
+                console.log(total)
+                console.log(i);
+                return p.price;
+            })
+        }
+
         let total1 = 0
         console.log(t);
         for (let i = 0; i < t.length; i++) {
@@ -69,10 +88,12 @@ export default function Header1({ carts }) {
                             <div class="col-xl-8  col-lg-8">
                                 <div class="header-right-3 text-end">
                                     <div class="h-top-list-3 d-inline-block">
-                                        <Link href={"/register"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faUser} />Log in / Register </Link>
+                                        {session.data && <p className="header-cart-3 inline-block"><FontAwesomeIcon className="mr-2" icon={faUser} />{session?.data?.name || session.data.user.name}</p>
+                                        }
+                                        {!session.data && <Link href={"/login"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faUser} />Login</Link>}
                                         <Link href={"/register"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faBalanceScale} />Compare</Link>
                                         <Link href={"/register"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faHeart} />Wishlist</Link>
-                                        <Link href={"/cart"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faShoppingBag} />{carts.length} / Rwf{total}</Link>
+                                        <Link href={"/cart"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faShoppingBag} />{carts?.length} / Rwf{total}</Link>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +105,8 @@ export default function Header1({ carts }) {
                     <div class="container">
                         <div class="header-wrap-3">
                             <div class="logo">
-                                <Image src={LogoB} width={200}></Image>
+                                <Link href={"/"}><Image src={LogoB} width={200}></Image></Link>
+
                             </div>
                             <div class="header-form-3">
                                 <form action="#">
@@ -152,11 +174,11 @@ export default function Header1({ carts }) {
             {nav && <ResponsiveNav classes={classes} />}
             <div class="epix-breadcrumb-area mb-40">
                 <div class="container">
-                    <h4 class="epix-breadcrumb-title">SHOP PAGE</h4>
+                    <h4 class="epix-breadcrumb-title">{currentPath.toUpperCase()}</h4>
                     <div class="epix-breadcrumb">
                         <ul>
                             <li>Home</li>
-                            <li><span>Shop Page</span></li>
+                            <li><span>{currentPath.toUpperCase()} Page</span></li>
                         </ul>
                     </div>
                 </div>

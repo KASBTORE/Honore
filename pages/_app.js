@@ -21,16 +21,17 @@ export default function App({ Component, pageProps, session }) {
   const [loading, setLoading] = useState(false)
   Router.events.on("routeChangeStart", (url) => {
     console.log("Changing");
-    setLoading(true)
+    if (url !== Router.asPath) {
+      setLoading(true);
+    }
   })
   Router.events.on("routeChangeComplete", (url) => {
-    setLoading(false)
+    if (url !== Router.asPath) {
+      setLoading(false);
+    }
     console.log("Complete");
   })
-  Router.events.on("routeChangeComplete", (url) => {
-    setLoading(false)
-    console.log("Complete");
-  })
+
   return (
     <SessionProvider session={session}>
       {loading && <Loader />}

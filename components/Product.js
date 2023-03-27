@@ -5,12 +5,22 @@ import { faWhatsapp } from '@fortawesome/free-brands-svg-icons'
 import Image from "next/image";
 import ProductImg from '../img/product.jpeg';
 import Alert from '@mui/material/Alert';
+import { CircularProgress } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useRouter } from 'next/router';
+import { useSession, getSession } from "next-auth/react";
 export default function Product({ product }) {
+    const router = useRouter();
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const { data: session, status } = useSession()
+    const refreshData = () => {
+        router.replace(router.asPath);
+        setIsRefreshing(true);
+    };
     const theme = createTheme({
         status: {
             danger: '#e53e3e',
@@ -21,7 +31,7 @@ export default function Product({ product }) {
                 darker: '#053e85',
             },
             neutral: {
-                main: '#64748B',
+                main: '#fff',
                 contrastText: '#fff',
             },
         },
@@ -29,71 +39,58 @@ export default function Product({ product }) {
     const [open, setOpen] = useState(true);
     const [message, setMessage] = useState(false);
     const [alert, setAlert] = useState("");
+    const [progress, setProgress] = useState(false)
+    useEffect(() => {
+        setIsRefreshing(false);
+    }, [message]);
     const onClick = async () => {
         // console.log(message);
-        try {
-            const api = await fetch('https://kabstore-7p9q.onrender.com/cart', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: product._id,
-                    name: product.name,
-                    category: product.category,
-                    price: product.price,
-                    discount: product.discount,
-                    status: product.status,
-                    picture: product.picture
+        setProgress(true)
+        if (session?.id) {
+            try {
+                const api = await fetch(`http://localhost:4000/user/${session.id}/cart`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: product._id,
+                        name: product.name,
+                        category: product.category,
+                        price: product.price,
+                        discount: product.discount,
+                        status: product.status,
+                        picture: product.picture
 
 
+                    })
                 })
-            })
-            const data = await api.json()
+                const data = await api.json()
 
-            if (data) {
-                console.log("Message coming");
-                console.log(data);
-                setMessage(true)
-                setOpen(true)
-                setAlert(data.message)
-                console.log(message);
-                console.log(data);
+                if (data) {
+                    console.log("Message coming");
+                    console.log(data);
+                    setMessage(true)
+                    setOpen(true)
+                    setAlert(data.message)
+                    refreshData()
+                    setProgress(false)
+                    console.log(message);
+                    console.log(data);
+                }
+            }
+            catch (err) {
+                console.log(err)
             }
         }
-        catch (err) {
-            console.log(err)
+        else {
+            router.push('/login')
         }
+
 
     }
 
     return (
         <>
             <div class="col-xxl-3 col-sm-6 col-md-4">
-                <div class="epix-single-product-3 mb-40 style-2 text-center swiper-slide">
-                    <div class="epix-product-thumb-3">
-                        <div class="epix-action">
-                            <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
-                                <a class="p-cart product-popup-toggle">
-                                    <FontAwesomeIcon icon={faEye} />
-                                </a>
-                            </Link>
-                            <a class="p-cart product-popup-toggle">
-                                <button onClick={onClick}>
-                                    <FontAwesomeIcon icon={faCartShopping} />
-                                </button>
-                            </a>
-                        </div>
-                        <span class="sale">sale</span>
-                        <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
-                            <Image src={ProductImg} width={250} height={100} />
-                        </Link>
-                    </div>
-                    <div class="price-box price-box-3">
-                        <span class="price">RWF {product.price}</span>
-
-                    </div>
-                    <h5 class="epix-p-title epix-p-title-3"><a href="product">{product.name}</a></h5>
-                </div>
-                {console.log(message)}
                 {
 
                     message && <ThemeProvider theme={theme}>
@@ -119,6 +116,33 @@ export default function Product({ product }) {
                             </Alert>
                         </Collapse>
                     </ThemeProvider>}
+                <div class="epix-single-product-3 mb-40 style-2 text-center swiper-slide">
+                    <div class="epix-product-thumb-3">
+                        <div class="epix-action">
+                            <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
+                                <a class="p-cart product-popup-toggle">
+                                    <FontAwesomeIcon icon={faEye} />
+                                </a>
+                            </Link>
+                            <a class="p-cart product-popup-toggle">
+                                <button onClick={onClick}>
+                                    {progress && <ThemeProvider theme={theme}> <CircularProgress className='mt-[10px]' color='neutral' size={20} /></ThemeProvider>}
+                                    {!progress && <FontAwesomeIcon icon={faCartShopping} />}
+                                </button>
+                            </a>
+                        </div>
+                        <span class="sale">sale</span>
+                        <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
+                            <Image src={ProductImg} width={250} height={100} />
+                        </Link>
+                    </div>
+                    <div class="price-box price-box-3">
+                        <span class="price">RWF {product.price}</span>
+
+                    </div>
+                    <h5 class="epix-p-title epix-p-title-3"><a href="product">{product.name}</a></h5>
+                </div>
+                {console.log(message)}
 
             </div>
         </>

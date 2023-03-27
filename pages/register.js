@@ -1,6 +1,32 @@
 import Footer from "components/Footer"
 import Header1 from "components/Header1"
-export default function Login({ carts }) {
+import { getSession } from "next-auth/react"
+import { useState } from "react"
+import Link from "next/link";
+export default function Register({ carts }) {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const onClick = async (e) => {
+        e?.preventDefault()
+        setName('')
+        setEmail('')
+        setPassword('')
+        try {
+            const api = await fetch('http://localhost:4000/user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: name, email: email, password: password }),
+            })
+            console.log(api);
+        }
+        catch (err) {
+            console.log(err)
+
+
+        }
+
+    }
     return (
         <>
             <Header1 carts={carts} />
@@ -32,18 +58,19 @@ export default function Login({ carts }) {
                             <div class="col-lg-8 offset-lg-2">
                                 <div class="basic-login">
                                     <h3 class="text-center mb-60">Signup From Here</h3>
-                                    <form action="#">
+                                    <div >
                                         <label for="name">Username <span>**</span></label>
-                                        <input id="name" type="text" placeholder="Enter Username" />
+                                        <input id="name" type="text" placeholder="Enter Username" onChange={(e) => { setName(e.target.value) }} />
                                         <label for="email-id">Email Address <span>**</span></label>
-                                        <input id="email-id" type="text" placeholder="Email address..." />
+                                        <input id="email-id" type="text" placeholder="Email address..." onChange={(e) => { setEmail(e.target.value) }} />
                                         <label for="pass">Password <span>**</span></label>
-                                        <input id="pass" type="password" placeholder="Enter password..." />
+                                        <input id="pass" type="password" placeholder="Enter password..." onChange={(e) => { setPassword(e.target.value) }} />
                                         <div class="mt-10"></div>
-                                        <button class="os-btn w-100">Register Now</button>
+                                        <button class="os-btn w-100" onClick={onClick}>Register Now</button>
                                         <div class="or-divide"><span>or</span></div>
-                                        <a href="login.html" class="os-btn os-btn-black w-100">login Now</a>
-                                    </form>
+                                        <button class="os-btn w-100"><Link href={"/login"}>Login Now</Link></button>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -56,8 +83,15 @@ export default function Login({ carts }) {
     )
 }
 export async function getServerSideProps() {
-    const carts = await fetch('https://kabstore-7p9q.onrender.com/cart')
-        .then(response => response.json())
+    const session = await getSession()
+    let carts = []
+    if (session) {
+        console.log("Doing this is in index", session);
+        console.log(session.id);
+        carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+            .then(response => response.json())
+        console.log("hello here area the carts", carts);
+    }
     return {
         props: {
             carts: carts
