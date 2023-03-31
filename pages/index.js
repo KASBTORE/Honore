@@ -38,7 +38,7 @@ import { CircularProgress } from '@mui/material';
 export default function HomePage({ products, carts, isLoading, promProduct }) {
     const { data: session } = useSession();
     const [openW, setOpenW] = useState(true);
-    const [messageW, setMessageW] = useState(false);
+    
     console.log(session)
     // if (!session?.id) {
 

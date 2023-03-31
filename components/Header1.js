@@ -17,10 +17,19 @@ export default function Header1({ carts }) {
     console.log("here consoling session from header", session);
 
     const [nav, setNav] = useState(false)
+    const [messageW, setMessageW] = useState(false); // welcome message 
     const router = useRouter()
     const [search, setSearch] = useState("")
     const [total, setTotal] = useState(0)
     const [currentPath, setCurrentPath] = useState("")
+    useEffect(() => {
+        if (session) {
+            setOpenW(true)
+            setMessageW(true)
+        }
+
+
+    }, [])
 
     useEffect(() => {
         setCurrentPath(router.asPath.slice(1))
@@ -66,6 +75,31 @@ export default function Header1({ carts }) {
     }
     return (
         <>
+            {messageW && <ThemeProvider theme={theme}>
+                <Collapse in={openW} className="w-[30%]">
+                    <Alert
+                        color='primary'
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setOpenW(false);
+                                    setMessageW(false);
+                                    console.log("Message", messageW);
+
+                                }}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                    >
+                        Welcome back <br /> {session.name} <FontAwesomeIcon className='ml-2' />
+                    </Alert>
+                </Collapse>
+            </ThemeProvider>}
             <header class="header-area d-none d-lg-block">
                 <div class="header-top-3">
                     <div class="container">

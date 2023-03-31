@@ -9,10 +9,22 @@ import { CircularProgress } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useSession, getSession } from "next-auth/react";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+
+
+const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 export default function Product({ product }) {
     const router = useRouter();
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -40,6 +52,17 @@ export default function Product({ product }) {
     const [message, setMessage] = useState(false);
     const [alert, setAlert] = useState("");
     const [progress, setProgress] = useState(false)
+    const [openT, setOpenT] = useState(false);
+    const [transition, setTransition] = useState(undefined);
+
+    const handleClickOpen = () => {
+        setOpenT(true);
+    };
+
+    const handleClose = () => {
+        setOpenT(false);
+        router.push('/login')
+    };
     useEffect(() => {
         setIsRefreshing(false);
     }, [message]);
@@ -125,11 +148,40 @@ export default function Product({ product }) {
                                 </a>
                             </Link>
                             <a class="p-cart product-popup-toggle">
-                                <button onClick={onClick}>
+                                <button onClick={() => {
+                                    if (!session?.id) {
+                                        handleClickOpen()
+                                    }
+                                    else {
+                                        onClick()
+                                    }
+
+
+                                }}>
                                     {progress && <ThemeProvider theme={theme}> <CircularProgress className='mt-[10px]' color='neutral' size={20} /></ThemeProvider>}
                                     {!progress && <FontAwesomeIcon icon={faCartShopping} />}
                                 </button>
+
                             </a>
+                            <ThemeProvider theme={theme}>
+                                <Dialog
+                                    open={openT}
+                                    TransitionComponent={Transition}
+                                    keepMounted
+                                    onClose={handleClose}
+                                    aria-describedby="alert-dialog-slide-description"
+                                >
+                                    <DialogTitle>{"Please Log In to continue"}</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-slide-description">
+                                            In order to add to cart we need to know who you are please sign in into your account to continue with our services.
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={handleClose}>Login</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </ThemeProvider>
                         </div>
                         <span class="sale">sale</span>
                         <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
