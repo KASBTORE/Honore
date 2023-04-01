@@ -2,6 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import { UseSession, signIn, signOut, useSession } from "next-auth/react"
 export default function LoginAuth() {
     const router = useRouter();
@@ -45,7 +47,7 @@ export default function LoginAuth() {
             password: password,
         });
         if (res?.error) {
-            console.log(res.error)
+            console.log("getting errors", res.error)
         } else {
             console.log(null)
             router.back()

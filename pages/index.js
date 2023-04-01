@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, forwardRef } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header1 from "components/Header1";
 import Timer from "components/Timer";
@@ -35,10 +35,38 @@ import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Login from 'components/LoginAuth';
 import { useRouter } from 'next/router';
 import { CircularProgress } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import Button from '@mui/material/Button';
+const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function HomePage({ products, carts, isLoading, promProduct }) {
     const { data: session } = useSession();
-    const [openW, setOpenW] = useState(true);
-    
+
+    console.log("here consoling session from header", session);
+    const [openT, setOpenT] = useState(false);
+    const [messageW, setMessageW] = useState(false)
+    useEffect(() => {
+        setMessageW(true)
+        handleClickOpen()
+    }, [])
+    const handleClickOpen = () => {
+        setOpenT(true);
+    };
+
+    const handleClose = () => {
+        setOpenT(false);
+        if (!session) {
+            router.push('/login')
+        }
+
+    };
     console.log(session)
     // if (!session?.id) {
 
@@ -60,14 +88,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
     //     }
     // }
 
-    useEffect(() => {
-        if (session) {
-            setOpenW(true)
-            setMessageW(true)
-        }
 
-
-    }, [session])
     const router = useRouter();
     const [isRefreshing, setIsRefreshing] = useState(false);
     const refreshData = () => {
@@ -213,32 +234,26 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
     }
     return (
         <>
-
             {messageW && <ThemeProvider theme={theme}>
-                <Collapse in={openW} className="w-[30%]">
-                    <Alert
-                        color='primary'
-                        action={
-                            <IconButton
-                                aria-label="close"
-                                color="inherit"
-                                size="small"
-                                onClick={() => {
-                                    setOpenW(false);
-                                    setMessageW(false);
-                                    console.log("Message", messageW);
-
-                                }}
-                            >
-                                <CloseIcon fontSize="inherit" />
-                            </IconButton>
-                        }
-                        sx={{ mb: 2 }}
-                    >
-                        Welcome back <br /> {session.name} <FontAwesomeIcon className='ml-2' />
-                    </Alert>
-                </Collapse>
+                <Dialog
+                    open={openT}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle>{!session ? "Please Log In to continue" : "Welcome"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            {!session ? "Welcome To our store in order to use our services you need to login to your account or create one" : `Welcome ${session.name} enjoy our services`}
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        {!session ? <Button onClick={handleClose}>Login</Button> : <Button onClick={handleClose}>Continue</Button>}
+                    </DialogActions>
+                </Dialog>
             </ThemeProvider>}
+
             <Header1 carts={carts} />
 
 

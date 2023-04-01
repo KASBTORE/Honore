@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { useRouter } from "next/router";
 import SearchField from "react-search-field";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,25 +11,45 @@ import Image from "next/image";
 import ResponsiveNav from './responsiveNav';
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Alert from '@mui/material/Alert';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+
+
 export default function Header1({ carts }) {
     const session = useSession()
 
     console.log("here consoling session from header", session);
+    const theme = createTheme({
+        status: {
+            danger: '#e53e3e',
+        },
+        palette: {
+            primary: {
+                main: '#000',
+                darker: '#053e85',
+            },
+            neutral: {
+                main: '#fff',
+                contrastText: '#fff',
+            },
+        },
+    });
 
+    const [openT, setOpenT] = useState(false);
+    const [welCome, setWelcome] = useState("")
+    const [openW, setOpenW] = useState(true);
     const [nav, setNav] = useState(false)
     const [messageW, setMessageW] = useState(false); // welcome message 
     const router = useRouter()
     const [search, setSearch] = useState("")
     const [total, setTotal] = useState(0)
     const [currentPath, setCurrentPath] = useState("")
-    useEffect(() => {
-        if (session) {
-            setOpenW(true)
-            setMessageW(true)
-        }
 
 
-    }, [])
+
 
     useEffect(() => {
         setCurrentPath(router.asPath.slice(1))
@@ -75,31 +95,7 @@ export default function Header1({ carts }) {
     }
     return (
         <>
-            {messageW && <ThemeProvider theme={theme}>
-                <Collapse in={openW} className="w-[30%]">
-                    <Alert
-                        color='primary'
-                        action={
-                            <IconButton
-                                aria-label="close"
-                                color="inherit"
-                                size="small"
-                                onClick={() => {
-                                    setOpenW(false);
-                                    setMessageW(false);
-                                    console.log("Message", messageW);
 
-                                }}
-                            >
-                                <CloseIcon fontSize="inherit" />
-                            </IconButton>
-                        }
-                        sx={{ mb: 2 }}
-                    >
-                        Welcome back <br /> {session.name} <FontAwesomeIcon className='ml-2' />
-                    </Alert>
-                </Collapse>
-            </ThemeProvider>}
             <header class="header-area d-none d-lg-block">
                 <div class="header-top-3">
                     <div class="container">

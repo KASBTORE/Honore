@@ -36,7 +36,7 @@ export default NextAuth({
 
                 const user = await res.json();
                 console.log("this works", user.user)
-                if (user) {
+                if (user.user) {
                     console.log("was here in credential", user);
                     return user.user;
 
