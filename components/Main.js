@@ -16,6 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { reactStrictMode } from 'next.config';
 import Link from 'next/link';
+import { set } from 'nprogress';
 function valuetext(value) {
     return `RWF${value}`;
 }
@@ -23,8 +24,10 @@ export default function Main({ products }) {
     console.log(products.length);
     const [sort, setSort] = useState('off');
     const [page, setPage] = useState(1)
-    const pageSize = 2
+    const pageSize = 3
     const [start, setStart] = useState(1)
+    const [displayProducts, setDisplayProducts] = useState([])
+
     const [end, setEnd] = useState(pageSize)
     const [price, setPrice] = useState(false)
     let pageCount = Math.ceil(products.length / pageSize)
@@ -32,7 +35,7 @@ export default function Main({ products }) {
         pageCount = Math.ceil(products.length / pageSize)
     }, [products])
     console.log(pageCount);
-    const displayProducts = useMemo(() => {
+    useEffect(() => {
         const firstPageIndex = (page - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
         if (lastPageIndex < products.length) {
@@ -45,9 +48,10 @@ export default function Main({ products }) {
             setEnd(firstPageIndex + 1)
             console.log("was last bbbrr", firstPageIndex + 1);
         }
-        return products.slice(firstPageIndex, lastPageIndex);
+        return setDisplayProducts(products.slice(firstPageIndex, lastPageIndex));
 
     }, [page])
+    console.log('cp', displayProducts);
     const handlePagination = (event, page1) => {
         setPage(page1)
     }
