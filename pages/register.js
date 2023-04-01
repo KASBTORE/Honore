@@ -2,11 +2,18 @@ import Footer from "components/Footer"
 import Header1 from "components/Header1"
 import { getSession } from "next-auth/react"
 import { useState } from "react"
+import { useRouter } from "next/router"
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import Link from "next/link";
 export default function Register({ carts }) {
+    const router = useRouter()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [message, setMessage] = useState('')
+    const [alert, setAlert] = useState(false)
+
     const onClick = async (e) => {
         e?.preventDefault()
         setName('')
@@ -18,7 +25,17 @@ export default function Register({ carts }) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: name, email: email, password: password }),
             })
-            console.log(api);
+            const data = await api.json()
+            if (data.user) {
+                router.push('/login')
+            }
+            else {
+                setMessage(data.message)
+                setAlert(true)
+                setTimeout(() => {
+                    setAlert(false)
+                }, 5000)
+            }
         }
         catch (err) {
             console.log(err)
@@ -31,6 +48,10 @@ export default function Register({ carts }) {
         <>
             <Header1 carts={carts} />
             <main>
+                {alert && <Alert severity="error" className="mb-60 absolute top-[50vh] left-[35vw]">
+                    <AlertTitle>Error</AlertTitle>
+                    {message} — <strong>try again</strong>
+                </Alert>}
                 {/* <div id="loading">
             <div id="loading-center">
                 <div id="loading-center-absolute">
@@ -66,9 +87,9 @@ export default function Register({ carts }) {
                                         <label for="pass">Password <span>**</span></label>
                                         <input id="pass" type="password" placeholder="Enter password..." onChange={(e) => { setPassword(e.target.value) }} />
                                         <div class="mt-10"></div>
-                                        <button class="os-btn w-100" onClick={onClick}>Register Now</button>
+                                        <button class="os-btn w-100 btw" onClick={onClick}>Register Now</button>
                                         <div class="or-divide"><span>or</span></div>
-                                        <button class="os-btn w-100"><Link href={"/login"}>Login Now</Link></button>
+                                        <button class="os-btn w-100 btw"><Link href={"/login"}>Login Now</Link></button>
 
                                     </div>
                                 </div>
