@@ -30,6 +30,7 @@ export default function App({ Component, pageProps, session }) {
   })
   Router.events.on("routeChangeComplete", (url) => {
     console.log("Complete");
+    setLoading(false);
   })
 
   return (
