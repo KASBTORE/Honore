@@ -2383,7 +2383,7 @@ span.bars::after {
 
 .buy-btn:hover {
   background-color: var(--clr-theme-1);
-  color: var(--clr-common-white);
+
 }
 
 .os-btn {
@@ -2403,13 +2403,16 @@ span.bars::after {
   font-size: 12px;
 }
 
-.os-btn:hover {
-  color: var(--clr-common-white);
-}
 
-.os-btn span {
-  color: var(--clr-theme-1);
-}
+
+/* .os-btn span {
+  color: var(--clr-common-white);
+} */
+
+/* .os-btn span:hover {
+  display: block;
+  color: var(--clr-common-white);
+} */
 
 .os-btn::after {
   position: absolute;
@@ -2435,8 +2438,8 @@ span.bars::after {
   height: 100%;
 }
 
-.os-btn:hover span {
-  color: var(--clr-theme-1);
+.btw:hover {
+  color: white;
 }
 
 .os-btn-2 {
@@ -2446,6 +2449,11 @@ span.bars::after {
 .os-btn-3 {
   padding: 0 77px;
 }
+
+/* .progress {
+  color: white !important;
+  align-self: center !important;
+} */
 
 .os-btn-black {
   color: var(--clr-common-white);

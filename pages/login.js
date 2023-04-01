@@ -1,11 +1,29 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { UseSession, signIn, signOut, useSession } from "next-auth/react"
+import { CircularProgress } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 export default function LoginAuth() {
+    const theme = createTheme({
+        status: {
+            danger: '#e53e3e',
+        },
+        palette: {
+            primary: {
+                main: '#fff',
+                darker: '#fff',
+            },
+            neutral: {
+                main: '#fff',
+                contrastText: '#fff',
+            },
+        },
+    })
     const router = useRouter();
     const [prevPath, setPrevPath] = useState('');
 
@@ -39,16 +57,25 @@ export default function LoginAuth() {
         }
 
     }
+    const [progress, setProgress] = useState(false)
+    const [alert, setAlert] = useState(false)
     const onClick = async () => {
         console.log("Clicked")
+        setProgress(true)
         const res = await signIn('credentials', {
             redirect: false,
             email: email,
             password: password,
         });
         if (res?.error) {
+            setProgress(false)
+            setAlert(true)
+            setTimeout(() => {
+                setAlert(false)
+            }, 2000)
             console.log("getting errors", res.error)
         } else {
+            setProgress(false)
             console.log(null)
             router.back()
         }
@@ -56,6 +83,8 @@ export default function LoginAuth() {
 
     }
     console.log('this is the prev path', prevPath);
+
+
     return (
         <section class="login-area pt-100 pb-100 overlay-open w-full h-full  ">
             <div class="container">
@@ -63,18 +92,25 @@ export default function LoginAuth() {
                     <div class="col-lg-8 offset-lg-2">
                         <div class="basic-login">
                             <h3 class="text-center mb-60">SignIn From Here</h3>
+                            {alert && <Alert severity="error" className="mb-60 absolute top-[0vh] left-[35vw]">
+                                <AlertTitle>Error</AlertTitle>
+                                Incorrect Password or Email — <strong>try again</strong>
+                            </Alert>}
                             <div>
                                 <label for="email-id">Email Address <span>**</span></label>
                                 <input id="email-id" type="text" placeholder="Email address..." onChange={(e) => { setEmail(e.target.value) }} />
                                 <label for="pass">Password <span>**</span></label>
                                 <input id="pass" type="password" placeholder="Enter password..." onChange={(e) => { setPassword(e.target.value) }} />
                                 <div class="mt-10"></div>
-                                <button className="os-btn os-btn-black w-100" onClick={onClick}>Login </button>
+                                <button className="os-btn os-btn-black w-100" onClick={onClick}>{progress && <ThemeProvider theme={theme}> <CircularProgress color='primary' size={20} /></ThemeProvider>}
+                                    {!progress && "Login"} </button>
                                 {/* <button className="os-btn os-btn-black w-100 mt-3" onClick={() => {
                                     signIn('google', {
                                         callbackUrl: '/'
                                     })
                                 }}>Sign in With google </button> */}
+                                <div class="or-divide"><span>or</span></div>
+                                <button class="os-btn btw w-100 to-white"><Link href={"/register"}>Register Now</Link></button>
                             </div>
                         </div>
                     </div>
