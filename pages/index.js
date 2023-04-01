@@ -51,16 +51,17 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
 
     console.log("here consoling session from header", session);
     const [openT, setOpenT] = useState(false);
+    const [openP, setOpenP] = useState(false);
     const [messageW, setMessageW] = useState(false)
     useEffect(() => {
         setMessageW(true)
         handleClickOpen()
     }, [])
-    const handleClickOpen = () => {
-        setOpenT(true);
+    const handleClickOpenP = () => {
+        setOpenP(true);
     };
 
-    const handleClose = () => {
+    const handleCloseP = () => {
         setOpenT(false);
         if (!session) {
             router.push('/login')
@@ -232,6 +233,14 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
 
 
     }
+    const handleClickOpen = () => {
+        setOpenT(true);
+    };
+
+    const handleClose = () => {
+        setOpenT(false);
+        router.push('/login')
+    };
     return (
         <>
             {messageW && <ThemeProvider theme={theme}>
@@ -249,7 +258,11 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        {!session ? <Button onClick={handleClose}>Login</Button> : <Button onClick={handleClose}>Continue</Button>}
+                        {!session ? <Button onClick={handleClose}>Login</Button> : <Button onClick={() => {
+                            setMessageW(false)
+                            setOpenT(false)
+
+                        }}>Continue</Button>}
                     </DialogActions>
                 </Dialog>
             </ThemeProvider>}
@@ -501,6 +514,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                             }
                                                                             else {
                                                                                 console.log("No session");
+                                                                                handleClickOpenP()
 
                                                                             }
 
@@ -509,6 +523,26 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                             {!progress && <FontAwesomeIcon icon={faCartShopping} />}
                                                                         </button>
                                                                     </a>
+
+                                                                    <ThemeProvider theme={theme}>
+                                                                        <Dialog
+                                                                            open={openP}
+                                                                            TransitionComponent={Transition}
+                                                                            keepMounted
+                                                                            onClose={handleCloseP}
+                                                                            aria-describedby="alert-dialog-slide-description"
+                                                                        >
+                                                                            <DialogTitle>{"Please Log In to continue"}</DialogTitle>
+                                                                            <DialogContent>
+                                                                                <DialogContentText id="alert-dialog-slide-description">
+                                                                                    In order to add to cart we need to know who you are please sign in into your account to continue with our services.
+                                                                                </DialogContentText>
+                                                                            </DialogContent>
+                                                                            <DialogActions>
+                                                                                <Button onClick={handleCloseP}>Login</Button>
+                                                                            </DialogActions>
+                                                                        </Dialog>
+                                                                    </ThemeProvider>
                                                                 </div>
                                                                 <Link href={`/product/${encodeURIComponent(product._id)}`} >
                                                                     <Image src={ProductImg} width={250} height={100} />
@@ -660,12 +694,41 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                             </Link>
                                                                             <a class="p-cart product-popup-toggle">
                                                                                 <button onClick={() => {
-                                                                                    return cartAdd(product, index)
+                                                                                    if (session) {
+                                                                                        console.log("session")
+                                                                                        return cartAdd(product, index)
+
+                                                                                    }
+                                                                                    else {
+                                                                                        console.log("No session");
+                                                                                        handleClickOpenP()
+
+                                                                                    }
                                                                                 }}>
                                                                                     {progress && <ThemeProvider theme={theme}> <CircularProgress className='mt-[10px]' color='neutral' size={20} /></ThemeProvider>}
                                                                                     {!progress && <FontAwesomeIcon icon={faCartShopping} />}
                                                                                 </button>
                                                                             </a>
+
+                                                                            <ThemeProvider theme={theme}>
+                                                                                <Dialog
+                                                                                    open={openP}
+                                                                                    TransitionComponent={Transition}
+                                                                                    keepMounted
+                                                                                    onClose={handleCloseP}
+                                                                                    aria-describedby="alert-dialog-slide-description"
+                                                                                >
+                                                                                    <DialogTitle>{"Please Log In to continue"}</DialogTitle>
+                                                                                    <DialogContent>
+                                                                                        <DialogContentText id="alert-dialog-slide-description">
+                                                                                            In order to add to cart we need to know who you are please sign in into your account to continue with our services.
+                                                                                        </DialogContentText>
+                                                                                    </DialogContent>
+                                                                                    <DialogActions>
+                                                                                        <Button onClick={handleCloseP}>Login</Button>
+                                                                                    </DialogActions>
+                                                                                </Dialog>
+                                                                            </ThemeProvider>
                                                                         </div>
                                                                         <Link href={`/product/${encodeURIComponent(product._id)}`} >
                                                                             <Image src={ProductImg} width={250} height={100} />
