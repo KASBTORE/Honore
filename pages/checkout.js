@@ -398,8 +398,9 @@ export default function CheckOut({ carts }) {
         </>
     )
 }
-export async function getServerSideProps() {
-    const carts = await fetch('http://localhost:4000/cart')
+export async function getServerSideProps(ctx) {
+    const session = await getSession(ctx)
+    const carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
         .then(response => response.json())
     return {
         props: {

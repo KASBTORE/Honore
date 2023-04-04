@@ -13,6 +13,7 @@ export default function Search({ filteredProducts, category }) {
     )
 }
 export async function getServerSideProps({ params }) {
+    const session = await getSession()
     const products = await fetch(`https://kabstore-7p9q.onrender.com/product`)
         .then(response => response.json())
     const carts = await fetch(`https://kabstore-7p9q.onrender.com/cart`)
