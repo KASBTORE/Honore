@@ -8,7 +8,7 @@ import LogoB from '../img/logo/logo-black.png'
 import Logo from '../img/logo/logo.png'
 import World from '../img/icon/world.png'
 import Image from "next/image";
-import ResponsiveNav from './responsiveNav';
+import ResponsiveNav from './ResponsiveNav';
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';

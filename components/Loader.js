@@ -1,5 +1,3 @@
-import Image from "next/image"
-import Logo from '../img/logo/logo-design.PNG'
 export default function Loader() {
     return (
         <div id="loading">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 function Timer({ initialTime }) {
     const [time, setTime] = useState(initialTime - new Date().getTime() / 1000);
     const [days, setDays] = useState(0);

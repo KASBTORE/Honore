@@ -1,7 +1,5 @@
 import Header1 from '../components/Header1'
 import Main from '../components/Main'
-import Product from '../components/Product'
-import Loader from 'components/Loader'
 import { useSession, getSession } from "next-auth/react";
 export default function Home({ products, carts, isLoading }) {
   const { data: session, status } = useSession()

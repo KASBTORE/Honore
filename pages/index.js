@@ -14,10 +14,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Header1 from "components/Header1";
 import Timer from "components/Timer";
 import Footer from "components/Footer";
-import Logo from "../img/logo/logo-design.PNG"
-import Banner from "img/banner/video-banner.jpg"
-import Banner1 from "img/banner/page-3-banner-2.jpg"
-import Banner2 from "img/banner/page-3-banner-2.jpg"
+import Banner from "../img/banner/video-banner.jpg"
+import Banner1 from "../img/banner/page-3-banner-2.jpg"
+import Banner2 from "../img/banner/page-3-banner-2.jpg"
 import Slider1 from '../img/slider/main-banner-4.jpg'
 import Slider2 from '../img/slider/main-banner-5.jpg'
 import Banner4 from "img/banner/banner-2-2.jpg"
@@ -32,7 +31,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
-import Login from 'components/LoginAuth';
 import { useRouter } from 'next/router';
 import { CircularProgress } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
