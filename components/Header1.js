@@ -4,7 +4,7 @@ import SearchField from "react-search-field";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphonesSimple, faMagnifyingGlass, faBars, faSquareXmark, faUser, faBalanceScale, faHeart, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons'
-import LogoB from '../img/logo/logo-black.png'
+import LogoB from '../img/logo/logo-black1.png'
 import Logo from '../img/logo/logo.png'
 import World from '../img/icon/world.png'
 import Image from "next/image";

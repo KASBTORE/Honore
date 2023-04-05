@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphonesSimple, faMagnifyingGlass, faBars, faSquareXmark, faMap, faPhoneAlt, faEnvelopeOpen } from '@fortawesome/free-solid-svg-icons'
 import { faInstagram, faFacebook, faTwitter, faYoutube, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
-import LogoB from '../img/logo/logo-black.png'
+import LogoB from '../img/logo/logo-black1.png'
 import Logo from '../img/logo/logo.png'
 import Image from "next/image";
 export default function ResponsiveNav({ classes }) {
