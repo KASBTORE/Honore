@@ -12,11 +12,6 @@ import ResponsiveNav from './ResponsiveNav';
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Alert from '@mui/material/Alert';
-import IconButton from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
-import CloseIcon from '@mui/icons-material/Close';
-
 
 export default function Header1({ carts }) {
     const session = useSession()
