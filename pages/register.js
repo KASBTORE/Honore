@@ -6,19 +6,36 @@ import { useRouter } from "next/router"
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Link from "next/link";
+import { CircularProgress } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 export default function Register({ carts }) {
+    const theme = createTheme({
+        status: {
+            danger: '#e53e3e',
+        },
+        palette: {
+            primary: {
+                main: '#fff',
+                darker: '#fff',
+            },
+            neutral: {
+                main: '#fff',
+                contrastText: '#fff',
+            },
+        },
+    })
     const router = useRouter()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
     const [alert, setAlert] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [progress, setProgress] = useState(false)
 
     const onClick = async (e) => {
         e?.preventDefault()
-        setName('')
-        setEmail('')
-        setPassword('')
+        setProgress(true)
         try {
             const api = await fetch('http://localhost:4000/user', {
                 method: 'POST',
@@ -27,9 +44,15 @@ export default function Register({ carts }) {
             })
             const data = await api.json()
             if (data.user) {
-                router.push('/login')
+                setLoggedIn(true)
+                setProgress(false)
+                setTimeout(() => {
+                    setLoggedIn(false)
+                    router.push('/login')
+                }, 1000)
             }
             else {
+                setProgress(false)
                 setMessage(data.message)
                 setAlert(true)
                 setTimeout(() => {
@@ -48,10 +71,11 @@ export default function Register({ carts }) {
         <>
             <Header1 carts={carts} />
             <main>
-                {alert && <Alert severity="error" className="mb-60 absolute top-[50vh] left-[35vw]">
+                {alert && !loggedIn && <Alert severity="error" className="mb-60 absolute top-[50vh] left-[35vw]">
                     <AlertTitle>Error</AlertTitle>
                     {message} — <strong>try again</strong>
                 </Alert>}
+                {alert && loggedIn && <Alert severity="success" className="mb-60 absolute top-[50vh] left-[35vw]"> <AlertTitle>Success</AlertTitle> Account created Successfully — <strong>Redirecting</strong> </Alert>}
                 {/* <div id="loading">
             <div id="loading-center">
                 <div id="loading-center-absolute">
@@ -87,7 +111,8 @@ export default function Register({ carts }) {
                                         <label for="pass">Password <span>**</span></label>
                                         <input id="pass" type="password" placeholder="Enter password..." onChange={(e) => { setPassword(e.target.value) }} />
                                         <div class="mt-10"></div>
-                                        <button class="os-btn w-100 btw" onClick={onClick}>Register Now</button>
+                                        <button class="os-btn w-100 btw" onClick={onClick}>{progress && <ThemeProvider theme={theme}> <CircularProgress color='primary' size={20} /></ThemeProvider>}
+                                            {!progress && "Register Now"}</button>
                                         <div class="or-divide"><span>or</span></div>
                                         <button class="os-btn w-100 btw"><Link href={"/login"}>Login Now</Link></button>
 

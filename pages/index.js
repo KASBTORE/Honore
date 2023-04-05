@@ -236,11 +236,13 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
     const handleClickOpen = () => {
         setOpenT(true);
     };
-
     const handleClose = () => {
         setOpenT(false);
         router.push('/login')
     };
+    const handleNoClose = () => {
+        setOpenT(false);
+    }
     return (
         <>
             {messageW && <ThemeProvider theme={theme}>
@@ -263,6 +265,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                             setOpenT(false)
 
                         }}>Continue</Button>}
+                        {!session && <Button onClick={handleNoClose}>No Thanks</Button>}
                     </DialogActions>
                 </Dialog>
             </ThemeProvider>}
@@ -540,6 +543,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                             </DialogContent>
                                                                             <DialogActions>
                                                                                 <Button onClick={handleCloseP}>Login</Button>
+                                                                                <Button onClick={handleNoClose}>No thanks</Button>
                                                                             </DialogActions>
                                                                         </Dialog>
                                                                     </ThemeProvider>
@@ -726,6 +730,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                                     </DialogContent>
                                                                                     <DialogActions>
                                                                                         <Button onClick={handleCloseP}>Login</Button>
+                                                                                        <Button onClick={handleNoClose}>No thanks</Button>
                                                                                     </DialogActions>
                                                                                 </Dialog>
                                                                             </ThemeProvider>

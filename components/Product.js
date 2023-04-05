@@ -63,6 +63,9 @@ export default function Product({ product }) {
         setOpenT(false);
         router.push('/login')
     };
+    const handleNoClose = () => {
+        setOpenT(false);
+    }
     useEffect(() => {
         setIsRefreshing(false);
     }, [message]);
@@ -179,6 +182,7 @@ export default function Product({ product }) {
                                     </DialogContent>
                                     <DialogActions>
                                         <Button onClick={handleClose}>Login</Button>
+                                        <Button onClick={handleNoClose}>No thanks</Button>
                                     </DialogActions>
                                 </Dialog>
                             </ThemeProvider>

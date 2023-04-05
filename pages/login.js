@@ -34,8 +34,6 @@ export default function LoginAuth() {
     const [email, setEmail] = useState("")
     const onClick1 = async (e) => {
         e?.preventDefault()
-        setEmail('')
-        setPassword('')
         const finalSlashIndex = router.asPath.lastIndexOf('/')
         const previousPath = router.asPath.slice(0, finalSlashIndex)
         console.log(previousPath);
@@ -59,6 +57,7 @@ export default function LoginAuth() {
     }
     const [progress, setProgress] = useState(false)
     const [alert, setAlert] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
     const onClick = async () => {
         console.log("Clicked")
         setProgress(true)
@@ -75,9 +74,16 @@ export default function LoginAuth() {
             }, 2000)
             console.log("getting errors", res.error)
         } else {
+            setLoggedIn(true)
+            setAlert(true)
+            setTimeout(() => {
+                setAlert(false)
+                setLoggedIn(false)
+            }, 2000)
+
             setProgress(false)
             console.log(null)
-            router.back()
+            setTimeout(() => { router.back() }, 1000)
         }
         // if (res.url) router.push(res.url);
 
@@ -92,10 +98,12 @@ export default function LoginAuth() {
                     <div class="col-lg-8 offset-lg-2">
                         <div class="basic-login">
                             <h3 class="text-center mb-60">SignIn From Here</h3>
-                            {alert && <Alert severity="error" className="mb-60 absolute top-[0vh] left-[35vw]">
+                            {alert && !loggedIn && <Alert severity="error" className="mb-60 absolute top-[0vh] left-[35vw]">
                                 <AlertTitle>Error</AlertTitle>
                                 Incorrect Password or Email — <strong>try again</strong>
                             </Alert>}
+                            {alert && loggedIn && <Alert severity="success" className="mb-60 absolute top-[0vh] left-[35vw]"> <AlertTitle>Success</AlertTitle> Logged In Successfully — <strong>Redirecting</strong> </Alert>}
+
                             <div>
                                 <label for="email-id">Email Address <span>**</span></label>
                                 <input id="email-id" type="text" placeholder="Email address..." onChange={(e) => { setEmail(e.target.value) }} />

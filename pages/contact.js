@@ -3,7 +3,76 @@ import Footer from "components/Footer";
 import { getSession } from "next-auth/react";
 import { faEnvelope, faEnvelopeOpen, faLocation, faMailReply, faMapMarker, faMobile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from "react"
+import { useRouter } from "next/router"
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Link from "next/link";
+import { CircularProgress } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { set } from "nprogress";
 export default function Contact({ carts }) {
+    const theme = createTheme({
+        status: {
+            danger: '#e53e3e',
+        },
+        palette: {
+            primary: {
+                main: '#fff',
+                darker: '#fff',
+            },
+            neutral: {
+                main: '#fff',
+                contrastText: '#fff',
+            },
+        },
+    })
+    const router = useRouter()
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [message, setMessage] = useState('')
+    const [messageReceived, setMessageReceived] = useState('')
+    const [subject, setSubject] = useState('')
+    const [alert, setAlert] = useState(false)
+    const [sent, setSent] = useState(false)
+    const [progress, setProgress] = useState(false)
+    const onClick = async (e) => {
+        e?.preventDefault()
+        setProgress(true)
+        try {
+            const api = await fetch('http://localhost:4000/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: name, email: email, message: messageReceived, subject: subject }),
+            })
+            const data = await api.json()
+            if (data.data) {
+                setAlert(true)
+                setSent(true)
+                setProgress(false)
+                setTimeout(() => {
+                    setSent(false)
+                    setAlert(false)
+                    setProgress(false)
+                }, 2000)
+            }
+            else {
+                setProgress(false)
+                setMessage(data.message)
+                setAlert(true)
+                setTimeout(() => {
+                    setAlert(false)
+                }, 5000)
+            }
+        }
+        catch (err) {
+            console.log(err)
+
+
+        }
+
+    }
+
     return (
         <>
             <Header1 carts={carts} />
@@ -61,13 +130,17 @@ export default function Contact({ carts }) {
                                         <div class="col-xl-6 col-lg-6">
                                             <div class="contact__input">
                                                 <label>Name <span class="required">*</span></label>
-                                                <input type="text" />
+                                                <input type="text" onChange={(e) => {
+                                                    setName(e.target.value)
+                                                }} />
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6">
                                             <div class="contact__input">
                                                 <label>Email <span class="required">*</span></label>
-                                                <input type="email" />
+                                                <input type="email" onChange={(e) => {
+                                                    setEmail(e.target.value)
+                                                }} />
                                             </div>
                                         </div>
                                     </div>
@@ -75,7 +148,9 @@ export default function Contact({ carts }) {
                                         <div class="col-xl-12">
                                             <div class="contact__input">
                                                 <label>Subject <span class="required">*</span></label>
-                                                <input type="text" />
+                                                <input type="text" onChange={(e) => {
+                                                    setSubject(e.target.value)
+                                                }} />
                                             </div>
                                         </div>
                                     </div>
@@ -83,14 +158,22 @@ export default function Contact({ carts }) {
                                         <div class="col-xl-12">
                                             <div class="contact__input">
                                                 <label>Message</label>
-                                                <textarea cols="30" rows="10"></textarea>
+                                                <textarea cols="30" rows="10" onChange={(e) => {
+                                                    setMessageReceived(e.target.value)
+                                                }}></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <div class="contact__submit">
-                                                <button type="submit" class="os-btn os-btn-black">Send Message</button>
+                                                <button class="os-btn os-btn-black btw mb-20" onClick={onClick}>{progress && <ThemeProvider theme={theme}> <CircularProgress color='primary' size={20} /></ThemeProvider>}
+                                                    {!progress && "Send Message"}</button>
+                                                {alert && !sent && <Alert severity="error" className="">
+                                                    <AlertTitle>Error</AlertTitle>
+                                                    {message} — <strong>try again</strong>
+                                                </Alert>}
+                                                {alert && sent && <Alert severity="success" className=""> <AlertTitle>Success</AlertTitle> Message Sent Successfully — <strong>Done</strong> </Alert>}
                                             </div>
                                         </div>
                                     </div>
@@ -110,9 +193,11 @@ export default function Contact({ carts }) {
 
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx)
-    const carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
-        .then(response => response.json())
-    console.log(carts, "This is the carts");
+    let carts = []
+    if (session) {
+        carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+            .then(response => response.json())
+    }
     return {
         props: {
             carts: carts
