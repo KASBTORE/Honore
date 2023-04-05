@@ -40,7 +40,7 @@ export default function Contact({ carts }) {
         e?.preventDefault()
         setProgress(true)
         try {
-            const api = await fetch('http://localhost:4000/message', {
+            const api = await fetch('https://kabstore-7p9q.onrender.com/message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: name, email: email, message: messageReceived, subject: subject }),
@@ -195,7 +195,7 @@ export async function getServerSideProps(ctx) {
     const session = await getSession(ctx)
     let carts = []
     if (session) {
-        carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+        carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
             .then(response => response.json())
     }
     return {

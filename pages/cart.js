@@ -127,12 +127,12 @@ export default function Cart({ products, user }) {
             return (
                 <tr key={index}>
                     <td className="product-thumbnail">
-                        <Link href={`http://localhost:3000/product/${product.id}`}>
+                        <Link href={`https://kabstoreonlineshop.com/product/${product.id}`}>
                             <Image src={product.picture} width={125} height={125} />
                         </Link>
                     </td>
                     <td className="product-name">
-                        <Link href={`http://localhost:3000/product/${product.id}`}>
+                        <Link href={`https://kabstoreonlineshop.com/product/${product.id}`}>
                             {product.name}
                         </Link>
                     </td>
@@ -179,7 +179,7 @@ export default function Cart({ products, user }) {
         ids.map((id) => {
             console.log(id);
             console.log("The id of the cart product", productQuantity[id]);
-            fetch(`http://localhost:4000/cart/${id}`, {
+            fetch(`https://kabstore-7p9q.onrender.com/cart/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -295,7 +295,7 @@ export async function getServerSideProps(context) {
         }
     }
     else {
-        const products = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+        const products = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
             .then(response => response.json())
         return {
             props: {

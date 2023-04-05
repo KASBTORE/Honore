@@ -400,7 +400,7 @@ export default function CheckOut({ carts }) {
 }
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx)
-    const carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+    const carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
         .then(response => response.json())
     return {
         props: {

@@ -71,7 +71,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
 
     //     try {
     //         console.log(JSON.stringify({ username: user.name, email: user.email, password: `${user.id + user.name}` }));
-    //         fetch(`http://localhost:4000/user`, {
+    //         fetch(`https://kabstore-7p9q.onrender.com/user`, {
     //             method: 'POST',
     //             body: JSON.stringify({ username: user.name, email: user.email, password: "?Dh3444440" }),
     //             headers: {
@@ -190,7 +190,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
         if (session) {
 
             try {
-                const api = await fetch(`http://localhost:4000/user/${session.id}/cart`, {
+                const api = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -831,14 +831,14 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
 
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx)
-    const products = await fetch('http://localhost:4000/product')
+    const products = await fetch('https://kabstore-7p9q.onrender.com/product')
         .then(response => response.json())
 
     let carts = []
     if (session) {
         console.log("Doing this is in index", session);
         console.log(session.id);
-        carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+        carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
             .then(response => response.json())
         console.log("hello here area the carts", carts);
     }

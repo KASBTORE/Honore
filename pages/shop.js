@@ -17,14 +17,14 @@ export default function Home({ products, carts, isLoading }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const products = await fetch('http://localhost:4000/product')
+  const products = await fetch('https://kabstore-7p9q.onrender.com/product')
     .then(response => response.json())
   const session = await getSession(ctx)
   const carts = []
   const { pathname } = ctx
   if (session) {
     console.log(session.id, "Thr id of the user");
-    const carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+    const carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
       .then(response => response.json())
     let isLoading = true
     return {

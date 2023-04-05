@@ -97,7 +97,7 @@ export default function Product({ product, carts }) {
 export async function getServerSideProps({ params }) {
     const product = await fetch(`https://kabstore-7p9q.onrender.com/product/${params.productId}`)
         .then(response => response.json())
-    const carts = await fetch(`https://kabstore-7p9q.onrender.com/cart`)
+    const carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
         .then(response => response.json())
     return {
         props: {

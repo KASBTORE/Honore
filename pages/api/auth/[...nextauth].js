@@ -26,7 +26,7 @@ export default NextAuth({
                     password: credentials.password,
                 };
 
-                const res = await fetch('http://localhost:4000/user/login', {
+                const res = await fetch('https://kabstore-7p9q.onrender.com/user/login', {
                     method: 'POST',
                     body: JSON.stringify(payload),
                     headers: {

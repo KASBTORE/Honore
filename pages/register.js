@@ -37,7 +37,7 @@ export default function Register({ carts }) {
         e?.preventDefault()
         setProgress(true)
         try {
-            const api = await fetch('http://localhost:4000/user', {
+            const api = await fetch('https://kabstore-7p9q.onrender.com/user', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: name, email: email, password: password }),
@@ -134,7 +134,7 @@ export async function getServerSideProps() {
     if (session) {
         console.log("Doing this is in index", session);
         console.log(session.id);
-        carts = await fetch(`http://localhost:4000/user/${session.id}/cart`)
+        carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
             .then(response => response.json())
         console.log("hello here area the carts", carts);
     }

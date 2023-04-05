@@ -42,7 +42,7 @@ export default function LoginAuth() {
                 email: email,
                 password: password
             }));
-            const api = await fetch('http://localhost:4000/user/login', {
+            const api = await fetch('https://kabstore-7p9q.onrender.com/user/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: (email), password: (password) }),

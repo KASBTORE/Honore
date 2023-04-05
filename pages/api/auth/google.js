@@ -6,7 +6,7 @@ const modifiedGoogleProvider = GoogleProvider({
     authorize: async (credentials, req) => {
         // Call the original authorize function to get the user object
         const user = await GoogleProvider.authorize(credentials, req);
-        const api = await fetch(`http://localhost:4000/user`, {
+        const api = await fetch(`https://kabstore-7p9q.onrender.com/user`, {
             method: 'POST',
             body: JSON.stringify({ username: user.name, email: user.email, password: "?Dh3444440" }),
             headers: {

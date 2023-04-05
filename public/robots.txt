@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://kabstore.vercel.app
+Host: https://kabstoreshop.vercel.app
 
 # Sitemaps
-Sitemap: https://kabstore.vercel.app/sitemap.xml
+Sitemap: https://kabstoreshop.vercel.app/sitemap.xml

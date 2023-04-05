@@ -30,7 +30,7 @@ var modifiedGoogleProvider = (0, _google["default"])({
           case 2:
             user = _context.sent;
             _context.next = 5;
-            return regeneratorRuntime.awrap(fetch("http://localhost:4000/user", {
+            return regeneratorRuntime.awrap(fetch("https://kabstore-7p9q.onrender.com/user", {
               method: 'POST',
               body: JSON.stringify({
                 username: user.name,

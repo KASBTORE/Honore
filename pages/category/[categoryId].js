@@ -16,7 +16,7 @@ export async function getServerSideProps({ params }) {
     const session = await getSession()
     const products = await fetch(`https://kabstore-7p9q.onrender.com/product`)
         .then(response => response.json())
-    const carts = await fetch(`https://kabstore-7p9q.onrender.com/cart`)
+    const carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
         .then(response => response.json())
     const filteredProducts = products.filter(
         product => {
