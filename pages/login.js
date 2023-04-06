@@ -26,6 +26,19 @@ export default function LoginAuth() {
     })
     const router = useRouter();
     const [prevPath, setPrevPath] = useState('');
+    useEffect(() => {
+        // Listen for changes to the router's history stack
+        router.beforePopState(({ url, as }) => {
+            console.log("this is the previous route", url);
+            if (as == 'register') {
+                router.push('/')
+                console.log("found register");
+            } // The previous URL
+            console.log(as); // The previous "as" URL (if using next/router's dynamic routing)
+
+            return true; // Allow the router to proceed with navigation
+        });
+    }, []);
 
     useEffect(() => {
         setPrevPath(router.asPath);
