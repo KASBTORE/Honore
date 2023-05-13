@@ -113,7 +113,13 @@ export default function Header1({ carts }) {
                             <div class="col-xl-8  col-lg-8">
                                 <div class="header-right-3 text-end">
                                     <div class="h-top-list-3 d-inline-block">
-                                        {session.data && <p className="header-cart-3 inline-block"><FontAwesomeIcon className="mr-2" icon={faUser} />{session?.data?.name || session.data.user.name}</p>
+                                        {session.data && <ul><li class="menu-item-has-children no-after"><Link href={"/profile"}><p className="header-cart-3 inline-block"><FontAwesomeIcon className="mr-2" icon={faUser} />{session?.data?.name || session.data.user.name}</p></Link>
+                                            <ul class="sub-menu">
+                                                <li><a href="./">Home Style 1</a></li>
+                                                <li><a href="./">Home Style 2</a></li>
+                                                <li><a href="./">Home Style 3</a></li>
+                                            </ul>
+                                        </li></ul>
                                         }
                                         {!session.data && <Link href={"/login"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faUser} />Login</Link>}
                                         <Link href={"/register"} className="header-cart-3"><FontAwesomeIcon className="mr-2" icon={faBalanceScale} />Compare</Link>

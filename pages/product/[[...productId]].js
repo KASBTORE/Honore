@@ -3,6 +3,7 @@ import ReactImageMagnify from 'react-image-magnify';
 import Header1 from "components/Header1";
 import Footer from "components/Footer";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
 export default function Product({ product, carts }) {
     return (
         <>
@@ -97,8 +98,16 @@ export default function Product({ product, carts }) {
 export async function getServerSideProps({ params }) {
     const product = await fetch(`https://kabstore-7p9q.onrender.com/product/${params.productId}`)
         .then(response => response.json())
-    const carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
-        .then(response => response.json())
+    const session = await getSession()
+    let carts
+    if (session) {
+        carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
+            .then(response => response.json())
+    }
+    else {
+        carts = []
+    }
+
     return {
         props: {
             product,
