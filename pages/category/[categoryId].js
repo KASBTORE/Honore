@@ -26,6 +26,7 @@ export async function getServerSideProps({ params }) {
         carts = await fetch(`https://kabstore-7p9q.onrender.com/user/${session.id}/cart`)
             .then(response => response.json())
         console.log("hello here area the carts", carts);
+        console.log("The filter", params.categoryId);
     }
     const filteredProducts = products.filter(
         product => {
@@ -34,7 +35,7 @@ export async function getServerSideProps({ params }) {
                 product
                     .category
                     .toLowerCase()
-                    .includes(params.categoryId)
+                    .includes(params.categoryId.toLowerCase())
             );
         }
     );
