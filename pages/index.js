@@ -29,7 +29,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper";
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { CircularProgress } from '@mui/material';
@@ -40,17 +39,20 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
+import { Autoplay, Pagination, Navigation } from 'swiper';
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function HomePage({ products, carts, isLoading, promProduct }) {
+export default function HomePage({ productsP, carts, isLoading, promProduct, categoriesC }) {
     const { data: session } = useSession();
 
     console.log("here consoling session from header", session);
     const [openT, setOpenT] = useState(false);
     const [openP, setOpenP] = useState(false);
     const [messageW, setMessageW] = useState(false)
+    const [products, setProducts] = useState(productsP)
+    const [categories, setCategories] = useState(categoriesC)
     useEffect(() => {
         setMessageW(true)
         handleClickOpen()
@@ -98,7 +100,11 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
         setIsRefreshing(false);
     }, [carts]);
     console.log(promProduct);
-    const categories = ["headphones", "television", "accessories", "phone", "computers"]
+    useEffect(() => {
+        setCategories(categoriesC)
+        setProducts(productsP)
+
+    }, [categories, products])
     const [category, setCategory] = useState(categories[0])
     const [selectedId, setSelectedId] = useState(0);
     const [selectedDId, setSelectedDId] = useState(0);
@@ -469,8 +475,8 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                             <button className={selectedId === i ? "active" : ""}
                                                 onClick={() => {
                                                     handleClick(i)
-                                                    tabClick(category)
-                                                }} data-bs-toggle="tab" data-bs-target="#tab1" type="button">{category}</button>
+                                                    tabClick(category.name)
+                                                }} data-bs-toggle="tab" data-bs-target="#tab1" type="button">{category.name}</button>
                                         </li>
 
 
@@ -677,7 +683,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                             <button className={selectedDId === index ? "active" : ""} data-bs-toggle="tab" data-bs-target="#tab-2-1" type="button" onClick={() => {
                                                                 tabClickD(discount)
                                                                 handleClickD(index);
-                                                            }}>{discount} Off</button>
+                                                            }}>{discount}  Off</button>
                                                         </li>))
                                                     }
                                                 </ul>
@@ -863,7 +869,7 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
 
 export async function getServerSideProps(ctx) {
     const session = await getSession(ctx)
-    const products = await fetch('https://kabstore-7p9q.onrender.com/product')
+    const productsP = await fetch('https://kabstore-7p9q.onrender.com/product')
         .then(response => response.json())
 
     let carts = []
@@ -879,18 +885,20 @@ export async function getServerSideProps(ctx) {
 
     const promProduct = await fetch('https://kabstore-7p9q.onrender.com/promproduct')
         .then(response => response.json())
+    const categoriesC = await fetch('https://kabstore-7p9q.onrender.com/category')
+        .then(response => response.json())
     const { pathname } = ctx
     if (pathname === '/') {
         let isLoading = true
         return {
             props: {
-                products, carts, isLoading, promProduct
+                productsP, carts, isLoading, promProduct, categoriesC
             }
         }
     }
     return {
         props: {
-            products, carts, promProduct
+            productsP, carts, promProduct, categoriesC
         }
     }
 

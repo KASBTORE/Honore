@@ -20,6 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import { Autoplay, Pagination, Navigation } from 'swiper';
 
 
 const Transition = forwardRef(function Transition(props, ref) {
