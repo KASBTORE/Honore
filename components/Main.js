@@ -158,13 +158,13 @@ export default function Main({ products }) {
                                                     id="demo-simple-select"
                                                     value={sort}
                                                     label="Sort"
-                                                    defaultValue={"off"}
+                                                    defaultValue={"AVAILABLE"}
                                                     onChange={handleChange}
                                                 >
-                                                    <MenuItem value={"featured"}>Featured</MenuItem>
-                                                    <MenuItem value={"off"}>OFF</MenuItem>
-                                                    <MenuItem value={"new"}>NEW</MenuItem>
-                                                    <MenuItem value={"on"}>ON</MenuItem>
+                                                    <MenuItem value={"AVAILABLE"}>AVAILABLE</MenuItem>
+                                                    <MenuItem value={"UNAVAILABLE"}>UNAVAILABLE</MenuItem>
+                                                    <MenuItem value={"COMING SOON"}>COMING SOON</MenuItem>
+                                                    <MenuItem value={"OUT OF STOCK"}>OUT OF STOCK</MenuItem>
                                                 </Select>
                                             </FormControl>
 

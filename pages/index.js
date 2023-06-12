@@ -547,7 +547,23 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                     </ThemeProvider>
                                                                 </div>
                                                                 <Link href={`/product/${encodeURIComponent(product._id)}`} >
-                                                                    <Image src={ProductImg} width={250} height={100} />
+                                                                    <Swiper
+                                                                        spaceBetween={30}
+                                                                        centeredSlides={true}
+                                                                        autoplay={{
+                                                                            delay: 2500,
+                                                                            disableOnInteraction: false,
+                                                                        }}
+                                                                        modules={[Autoplay]}
+                                                                        onAutoplayTimeLeft={5}
+                                                                        className="mySwiper"
+                                                                    >
+                                                                        {product.pictures?.map((image, index) => {
+                                                                            return <SwiperSlide >
+                                                                                <Image width={250} height={100} src={image} alt="F" />
+                                                                            </SwiperSlide>
+                                                                        })}
+                                                                    </Swiper>
                                                                 </Link>
                                                             </div>
                                                         </div>
@@ -734,7 +750,23 @@ export default function HomePage({ products, carts, isLoading, promProduct }) {
                                                                             </ThemeProvider>
                                                                         </div>
                                                                         <Link href={`/product/${encodeURIComponent(product._id)}`} >
-                                                                            <Image src={ProductImg} width={250} height={100} />
+                                                                            <Swiper
+                                                                                spaceBetween={30}
+                                                                                centeredSlides={true}
+                                                                                autoplay={{
+                                                                                    delay: 2500,
+                                                                                    disableOnInteraction: false,
+                                                                                }}
+                                                                                modules={[Autoplay]}
+                                                                                onAutoplayTimeLeft={5}
+                                                                                className="mySwiper"
+                                                                            >
+                                                                                {product.pictures?.map((image, index) => {
+                                                                                    return <SwiperSlide >
+                                                                                        <Image width={250} height={100} src={image} alt="F" />
+                                                                                    </SwiperSlide>
+                                                                                })}
+                                                                            </Swiper>
                                                                         </Link>
                                                                     </div>
                                                                 </div>
