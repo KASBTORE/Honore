@@ -1,7 +1,7 @@
 import Header1 from '../components/Header1'
 import Main from '../components/Main'
 import { useSession, getSession } from "next-auth/react";
-export default function Home({ products, carts, isLoading }) {
+export default function Home({ products, carts, isLoading, categories }) {
   const { data: session, status } = useSession()
   console.log("This is the session", carts);
   console.log(isLoading);
@@ -9,7 +9,7 @@ export default function Home({ products, carts, isLoading }) {
     <>
       {/* {isLoading && <Loader />} */}
       <Header1 carts={carts} />
-      <Main products={products} />
+      <Main products={products} categories={categories} />
 
 
     </>
@@ -19,6 +19,9 @@ export default function Home({ products, carts, isLoading }) {
 export async function getServerSideProps(ctx) {
   const products = await fetch('https://kabstore-7p9q.onrender.com/product')
     .then(response => response.json())
+  const categories = await fetch('https://kabstore-7p9q.onrender.com/category')
+    .then(response => response.json())
+
   const session = await getSession(ctx)
   const carts = []
   const { pathname } = ctx
@@ -29,13 +32,13 @@ export async function getServerSideProps(ctx) {
     let isLoading = true
     return {
       props: {
-        products, isLoading, carts
+        products, isLoading, carts, categories
       }
     }
   }
   return {
     props: {
-      products, carts
+      products, carts, categories
     }
   }
 

@@ -21,6 +21,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { Autoplay, Pagination, Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -190,23 +191,11 @@ export default function Product({ product }) {
                         </div>
                         <span class="sale">sale</span>
                         <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
-                            <Swiper
-                                spaceBetween={30}
-                                centeredSlides={true}
-                                autoplay={{
-                                    delay: 2500,
-                                    disableOnInteraction: false,
-                                }}
-                                modules={[Autoplay]}
-                                onAutoplayTimeLeft={5}
-                                className="mySwiper"
-                            >
-                                {product.pictures?.map((image, index) => {
-                                    return <SwiperSlide >
-                                        <Image width={250} height={100} src={image} alt="F" />
-                                    </SwiperSlide>
-                                })}
-                            </Swiper>
+
+
+                            <Image width={250} height={100} src={product.pictures[0]} alt="F" />
+
+
                         </Link>
                     </div>
                     <div class="price-box price-box-3">

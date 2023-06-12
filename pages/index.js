@@ -552,24 +552,12 @@ export default function HomePage({ productsP, carts, isLoading, promProduct, cat
                                                                         </Dialog>
                                                                     </ThemeProvider>
                                                                 </div>
-                                                                <Link href={`/product/${encodeURIComponent(product._id)}`} >
-                                                                    <Swiper
-                                                                        spaceBetween={30}
-                                                                        centeredSlides={true}
-                                                                        autoplay={{
-                                                                            delay: 2500,
-                                                                            disableOnInteraction: false,
-                                                                        }}
-                                                                        modules={[Autoplay]}
-                                                                        onAutoplayTimeLeft={5}
-                                                                        className="mySwiper"
-                                                                    >
-                                                                        {product.pictures?.map((image, index) => {
-                                                                            return <SwiperSlide >
-                                                                                <Image width={250} height={100} src={image} alt="F" />
-                                                                            </SwiperSlide>
-                                                                        })}
-                                                                    </Swiper>
+                                                                <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
+
+
+                                                                    <Image width={250} height={100} src={product.pictures[0]} alt="F" />
+
+
                                                                 </Link>
                                                             </div>
                                                         </div>
@@ -755,24 +743,12 @@ export default function HomePage({ productsP, carts, isLoading, promProduct, cat
                                                                                 </Dialog>
                                                                             </ThemeProvider>
                                                                         </div>
-                                                                        <Link href={`/product/${encodeURIComponent(product._id)}`} >
-                                                                            <Swiper
-                                                                                spaceBetween={30}
-                                                                                centeredSlides={true}
-                                                                                autoplay={{
-                                                                                    delay: 2500,
-                                                                                    disableOnInteraction: false,
-                                                                                }}
-                                                                                modules={[Autoplay]}
-                                                                                onAutoplayTimeLeft={5}
-                                                                                className="mySwiper"
-                                                                            >
-                                                                                {product.pictures?.map((image, index) => {
-                                                                                    return <SwiperSlide >
-                                                                                        <Image width={250} height={100} src={image} alt="F" />
-                                                                                    </SwiperSlide>
-                                                                                })}
-                                                                            </Swiper>
+                                                                        <Link href={`/product/${encodeURIComponent(product._id)}`} legacyBehavior>
+
+
+                                                                            <Image width={250} height={100} src={product.pictures[0]} alt="F" />
+
+
                                                                         </Link>
                                                                     </div>
                                                                 </div>

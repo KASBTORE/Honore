@@ -17,13 +17,13 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { reactStrictMode } from 'next.config';
 import Link from 'next/link';
 import { set } from 'nprogress';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
 function valuetext(value) {
     return `RWF${value}`;
 }
-export default function Main({ products }) {
+export default function Main({ products, categories }) {
     console.log(products.length);
-    const [sort, setSort] = useState('off');
+    const [sort, setSort] = useState('AVAILABLE');
     const [page, setPage] = useState(1)
     const pageSize = 3
     const [start, setStart] = useState(1)
@@ -46,7 +46,7 @@ export default function Main({ products }) {
         }
         else {
             setStart(firstPageIndex + 1)
-            setEnd(firstPageIndex + 1)
+            setEnd(products.length)
             console.log("was last bbbrr", firstPageIndex + 1);
         }
         return setDisplayProducts(products.slice(firstPageIndex, lastPageIndex));
@@ -90,14 +90,11 @@ export default function Main({ products }) {
                                     <h4 class="epix-s-widget-title">SHOP BY CATEGORIES</h4>
                                     <div class="epix-taglist">
                                         <ul>
-                                            <li><Link href={`/category/${encodeURIComponent("accessories")}`}>Accessories</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("cameras")}`}>Cameras</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("computers")}`}>Computers</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("tablet")}`}>Tablet</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("games")}`}>Games</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("smartPhones")}`}>SmartPhones</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("television")}`}>Television</Link></li>
-                                            <li><Link href={`/category/${encodeURIComponent("uncategorized")}`}>Uncategorized</Link></li>
+                                            {categories.map((category) => {
+
+                                                return (<li><Link href={`/category/${encodeURIComponent(category.name)}`}>{category.name}</Link></li>)
+                                            })}
+
                                         </ul>
                                     </div>
                                 </div>
