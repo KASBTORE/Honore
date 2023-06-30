@@ -1,6 +1,7 @@
 import Footer from "components/Footer"
 import Header1 from "components/Header1"
 import { useEffect, useState } from "react"
+import { getSession } from "next-auth/react"
 export default function CheckOut({ carts }) {
     const [total, setTotal] = useState(0)
     const [selectedValue, setSelectedValue] = useState(0);

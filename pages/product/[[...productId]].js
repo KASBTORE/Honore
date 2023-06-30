@@ -4,7 +4,11 @@ import Header1 from "components/Header1";
 import Footer from "components/Footer";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
+import PictureColorChanger from "components/PictureColorChanger";
+import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Product({ product, carts }) {
+    console.log("product", product);
     return (
         <>
             <Header1 carts={carts} />
@@ -25,12 +29,12 @@ export default function Product({ product, carts }) {
                                                     <ReactImageMagnify {...{
                                                         smallImage: {
                                                             alt: 'Wristwatch by Ted Baker London',
-                                                            src: product.picture,
+                                                            src: product.pictures[0],
                                                             width: 466,
                                                             height: 466
                                                         },
                                                         largeImage: {
-                                                            src: product.picture,
+                                                            src: product.pictures[0],
                                                             width: 1200,
                                                             height: 1800
                                                         }
@@ -45,11 +49,13 @@ export default function Product({ product, carts }) {
                         <div class="col-xxl-6 col-lg-6">
                             <div class="epix-single-product-right">
                                 <div class="rating">
-                                    <i class="fas fa-star active"></i>
-                                    <i class="fas fa-star active"></i>
-                                    <i class="fas fa-star active"></i>
-                                    <i class="fas fa-star-half"></i>
-                                    <i class="fas fa-star text-gray"></i>
+                                    <FontAwesomeIcon color="gold" icon={faStar} className="active" />
+                                    <FontAwesomeIcon color="gold" icon={faStar} className="active" />
+                                    <FontAwesomeIcon color="gold" icon={faStar} className="active" />
+                                    <FontAwesomeIcon color="gold" icon={faStarHalf} />
+                                    <FontAwesomeIcon color="grey" icon={faStar} className="text-grey" />
+
+                                    <faStar class="text-grey" />
                                 </div>
                                 <h4 class="epix-single-product-title">{product.name}</h4>
                                 <p class="epix-product-details-short-description">
@@ -58,21 +64,37 @@ export default function Product({ product, carts }) {
                                 <p class="price">
                                     <span class="epix-price-amount">
                                         <bdi>
-                                            <span class="epix-price-currency-symbol">RWF </span>
+                                            <span class="epix-price-currency-symbol"><faStar /> RWF </span>
                                             {product.price}
                                         </bdi>
                                     </span>
                                 </p>
                                 <form action="#" class="epix-cart-variation">
+                                    <div class="epix-product-label mb-35">
+                                        <a href="#" class="title">SERIES CPU</a>
+                                        <div class="taglist">
+                                            <a href="shop">Core i5</a>
+                                            <a href="shop">Core i7</a>
+                                            <a href="shop">Core i9</a>
+                                        </div>
+                                    </div>
                                     <div class="epix-quantity-validation">
                                         <div class="wrap-2 d-block d-sm-inline-block mb-15 mb-sm-0">
+                                            <div class="d-inline-block border-gray mr-20">
+                                                <div class="epix-quantity-form">
+                                                    <div class="cart-plus-minus"></div>
+                                                    <input type="text" value="2" />
+                                                </div>
+                                            </div>
 
 
                                             <a href="https://wa.me/250788458897?text=Hello, i'm interested to buy this product, http://kabstore.devslab.io/product?details=<?php print $productId;?>
                                             " class="cart-btn mr-15" style={{ backgroundColor: "#075E54 !important" }}><i class="fab fa-whatsapp"></i> Buy via Whatsapp</a>
                                         </div>
+                                        <a href="#" class="buy-btn d-block d-sm-inline-block text-center text-sm-left">Buy Now</a>
                                     </div>
                                 </form>
+                                <PictureColorChanger image={product.pictures[0]} />
                             </div>
 
                         </div>
@@ -96,8 +118,9 @@ export default function Product({ product, carts }) {
 //     };
 // }
 export async function getServerSideProps({ params }) {
-    const product = await fetch(`https://kabstore-7p9q.onrender.com/product/${params.productId}`)
+    const pro = await fetch(`https://kabstore-7p9q.onrender.com/product/${params.productId}`)
         .then(response => response.json())
+    const product = pro.product
     const session = await getSession()
     let carts
     if (session) {

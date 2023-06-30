@@ -1,6 +1,6 @@
 import Product from "components/Product";
 import Main from "components/Main";
-export default function Search({ filteredProducts, word }) {
+export default function Search({ filteredProducts, word, categories }) {
     return (
         <>
             <div class="epix-breadcrumb-area mb-40">
@@ -13,13 +13,15 @@ export default function Search({ filteredProducts, word }) {
                     </div>
                 </div>
             </div>
-            <Main products={filteredProducts} />
+            <Main products={filteredProducts} categories={categories} />
         </>
     )
 }
 
 export async function getServerSideProps({ params }) {
     const products = await fetch(`https://kabstore-7p9q.onrender.com/product`)
+        .then(response => response.json())
+    const categories = await fetch(`https://kabstore-7p9q.onrender.com/category`)
         .then(response => response.json())
     const filteredProducts = products.filter(
         product => {
@@ -42,7 +44,8 @@ export async function getServerSideProps({ params }) {
     return {
         props: {
             filteredProducts,
-            word
+            word,
+            categories
         },
     };
 }
